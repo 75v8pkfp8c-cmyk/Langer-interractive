@@ -1,1 +1,5329 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Robert Langer — Controlled Drug Delivery</title>
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg-1: #020711;
+    --bg-2: #071321;
+    --bg-3: #10283d;
+
+    --text: #f5fbff;
+    --muted: #9eb4c8;
+    --muted-2: #71879b;
+
+    --cyan: #55dcff;
+    --blue: #416dff;
+
+    --orange: #ffb454;
+    --red: #ff685e;
+
+    --border: rgba(255,255,255,0.12);
+
+    --radius-lg: 28px;
+    --radius-md: 20px;
+    --radius-sm: 14px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at 50% -10%,
+            rgba(37,122,174,.28),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 85% 30%,
+            rgba(57,70,180,.12),
+            transparent 30%
+        ),
+        linear-gradient(
+            145deg,
+            var(--bg-3) 0%,
+            var(--bg-2) 42%,
+            var(--bg-1) 100%
+        );
+
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    pointer-events: none;
+
+    background-image:
+        radial-gradient(
+            rgba(255,255,255,.08) 1px,
+            transparent 1px
+        );
+
+    background-size: 32px 32px;
+
+    opacity: .08;
+
+    z-index: -1;
+}
+
+button {
+    font: inherit;
+}
+
+button:focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 4px;
+}
+
+
+/* =========================================================
+   LANGUAGE MODAL
+========================================================= */
+
+.language-modal {
+    position: fixed;
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(20,83,123,.25),
+            rgba(0,0,0,.85)
+        );
+
+    backdrop-filter: blur(18px);
+
+    transition:
+        opacity .5s ease,
+        visibility .5s ease;
+}
+
+.language-modal.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.language-box {
+    width: min(520px, 100%);
+
+    padding: 42px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.14);
+
+    border-radius: 30px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.095),
+            rgba(255,255,255,.035)
+        );
+
+    box-shadow:
+        0 40px 120px rgba(0,0,0,.55),
+        inset 0 1px rgba(255,255,255,.08);
+
+    text-align: center;
+
+    animation:
+        modalIn
+        .7s
+        cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform:
+            translateY(25px)
+            scale(.96);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+.language-icon {
+    width: 74px;
+    height: 74px;
+
+    margin: 0 auto 22px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(85,220,255,.22),
+            rgba(65,109,255,.18)
+        );
+
+    border:
+        1px solid
+        rgba(85,220,255,.22);
+
+    box-shadow:
+        0 0 35px rgba(85,220,255,.12);
+}
+
+.language-icon span {
+    font-size: 34px;
+}
+
+.language-box h2 {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.language-box p {
+    color: var(--muted);
+
+    line-height: 1.6;
+
+    margin-bottom: 28px;
+}
+
+.language-buttons {
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        1fr;
+
+    gap: 14px;
+}
+
+.language-button {
+    border:
+        1px solid
+        rgba(255,255,255,.13);
+
+    background:
+        rgba(255,255,255,.045);
+
+    color: white;
+
+    padding: 17px 18px;
+
+    border-radius: 16px;
+
+    cursor: pointer;
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        border-color .2s ease;
+}
+
+.language-button:hover {
+    transform: translateY(-3px);
+
+    background:
+        rgba(255,255,255,.09);
+
+    border-color:
+        rgba(85,220,255,.35);
+}
+
+.language-button strong {
+    display: block;
+
+    font-size: 17px;
+
+    margin-bottom: 4px;
+}
+
+.language-button span {
+    display: block;
+
+    font-size: 12px;
+
+    color: var(--muted-2);
+}
+
+
+/* =========================================================
+   APPLICATION
+========================================================= */
+
+#app {
+    opacity: 0;
+    transform: translateY(10px);
+
+    transition:
+        opacity .8s ease,
+        transform .8s ease;
+}
+
+#app.ready {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.page {
+    display: none;
+
+    min-height: 100vh;
+
+    padding:
+        26px
+        20px
+        70px;
+}
+
+.page.active {
+    display: block;
+
+    animation:
+        pageIn
+        .65s
+        cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes pageIn {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container {
+    width: min(1180px, 100%);
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    width: min(1180px, 100%);
+
+    margin:
+        0
+        auto
+        40px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+}
+
+.brand {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+}
+
+.brand-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: var(--cyan);
+
+    box-shadow:
+        0 0 15px
+        rgba(85,220,255,.85);
+}
+
+.language-switcher {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 6px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,.035);
+}
+
+.lang-option {
+    border: 0;
+
+    background: transparent;
+
+    color: var(--muted);
+
+    padding:
+        8px
+        12px;
+
+    border-radius: 999px;
+
+    cursor: pointer;
+
+    font-size: 11px;
+
+    letter-spacing: 1px;
+
+    transition: .2s ease;
+}
+
+.lang-option.active {
+    background:
+        rgba(85,220,255,.13);
+
+    color: white;
+}
+
+
+/* =========================================================
+   TYPOGRAPHY
+========================================================= */
+
+.hero-title {
+    text-align: center;
+
+    font-size:
+        clamp(
+            44px,
+            8vw,
+            82px
+        );
+
+    line-height: .95;
+
+    letter-spacing:
+        clamp(
+            1px,
+            .4vw,
+            5px
+        );
+
+    font-weight: 800;
+
+    margin-bottom: 18px;
+}
+
+.highlight {
+    color: var(--cyan);
+
+    text-shadow:
+        0 0 30px
+        rgba(85,220,255,.28);
+}
+
+.subtitle {
+    width: min(800px, 100%);
+
+    margin:
+        0
+        auto
+        44px;
+
+    color: var(--muted);
+
+    font-size:
+        clamp(
+            15px,
+            1.7vw,
+            18px
+        );
+
+    line-height: 1.65;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   PAGE 1 — CARDS
+========================================================= */
+
+.compare {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0,1fr));
+
+    gap: 22px;
+}
+
+.card {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 30px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        var(--radius-lg);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.075),
+            rgba(255,255,255,.028)
+        );
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.38);
+
+    backdrop-filter: blur(14px);
+
+    transition:
+        transform .3s ease,
+        border-color .3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+
+    border-color:
+        rgba(255,255,255,.2);
+}
+
+.card-header {
+    margin-bottom: 10px;
+}
+
+.card-number {
+    color: var(--muted-2);
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+
+    margin-bottom: 5px;
+}
+
+.card h2 {
+    font-size: 27px;
+
+    line-height: 1.2;
+}
+
+.traditional h2 {
+    color: #ff8178;
+}
+
+.controlled h2 {
+    color: var(--cyan);
+}
+
+.card-description {
+    color: var(--muted);
+
+    line-height: 1.65;
+
+    margin-bottom: 25px;
+}
+
+
+/* =========================================================
+   GRAPH
+========================================================= */
+
+.graph-wrap {
+    position: relative;
+
+    padding:
+        12px
+        10px
+        6px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.07);
+
+    border-radius: 18px;
+
+    background:
+        rgba(2,8,16,.32);
+}
+
+.graph {
+    position: relative;
+
+    height: 245px;
+
+    overflow: hidden;
+
+    border-left:
+        1px solid
+        rgba(160,190,215,.28);
+
+    border-bottom:
+        1px solid
+        rgba(160,190,215,.28);
+
+    background:
+        linear-gradient(
+            rgba(255,255,255,.04) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.028) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        100% 25%,
+        10% 100%;
+}
+
+
+/*
+   Subtle scanner effect.
+*/
+
+.graph::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to right,
+            transparent,
+            rgba(255,255,255,.025),
+            transparent
+        );
+
+    transform:
+        translateX(-100%);
+}
+
+.graph.playing::before {
+    animation:
+        scanGraph
+        4s
+        cubic-bezier(.3,.7,.3,1)
+        forwards;
+}
+
+@keyframes scanGraph {
+
+    to {
+        transform:
+            translateX(100%);
+    }
+
+}
+
+
+/* =========================================================
+   GRAPH LABELS
+========================================================= */
+
+.graph-label {
+    position: absolute;
+
+    left: 10px;
+    top: 9px;
+
+    color: var(--muted-2);
+
+    font-size: 10px;
+
+    letter-spacing: 1px;
+
+    z-index: 3;
+}
+
+
+/*
+   X-axis title.
+
+   This is the new Time / Idő label.
+*/
+
+.time-label {
+    position: absolute;
+
+    left: 50%;
+    bottom: 20px;
+
+    transform:
+        translateX(-50%);
+
+    color: var(--muted-2);
+
+    font-size: 10px;
+
+    letter-spacing: 1px;
+
+    z-index: 3;
+}
+
+
+.graph svg {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    overflow: visible;
+}
+
+
+/*
+   pathLength="1" on each SVG path means that the browser
+   treats the entire line as exactly one normalized unit.
+*/
+
+.graph-line {
+    fill: none;
+
+    stroke-width: 5;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+
+    stroke-dasharray: 1;
+
+    stroke-dashoffset: 1;
+
+    vector-effect:
+        non-scaling-stroke;
+}
+
+.traditional-line {
+    stroke: var(--red);
+
+    filter:
+        drop-shadow(
+            0 0 7px
+            rgba(255,83,76,.62)
+        );
+}
+
+.controlled-line {
+    stroke: var(--cyan);
+
+    filter:
+        drop-shadow(
+            0 0 8px
+            rgba(55,213,255,.58)
+        );
+}
+
+
+/*
+   IMPORTANT:
+   JavaScript adds "playing" directly to .graph.
+*/
+
+.graph.playing .graph-line {
+
+    animation:
+        graphDraw
+        4s
+        cubic-bezier(.35,.75,.2,1)
+        forwards;
+
+}
+
+@keyframes graphDraw {
+
+    from {
+        stroke-dashoffset: 1;
+    }
+
+    to {
+        stroke-dashoffset: 0;
+    }
+
+}
+
+
+/* =========================================================
+   GRAPH PEAKS
+========================================================= */
+
+.graph-peak {
+    opacity: 0;
+
+    transform-box: fill-box;
+
+    transform-origin: center;
+}
+
+.graph.playing .graph-peak {
+
+    animation:
+        graphPeak
+        1.6s
+        ease-out
+        forwards;
+
+}
+
+.graph.playing .peak-1 {
+    animation-delay: .55s;
+}
+
+.graph.playing .peak-2 {
+    animation-delay: 1.05s;
+}
+
+.graph.playing .peak-3 {
+    animation-delay: 1.55s;
+}
+
+.graph.playing .peak-4 {
+    animation-delay: 2.05s;
+}
+
+.graph.playing .peak-5 {
+    animation-delay: 2.55s;
+}
+
+.graph.playing .peak-6 {
+    animation-delay: 3.05s;
+}
+
+@keyframes graphPeak {
+
+    0% {
+        opacity: 0;
+
+        transform:
+            scale(.35);
+    }
+
+    30% {
+        opacity: 1;
+
+        transform:
+            scale(1.5);
+    }
+
+    100% {
+        opacity: 0;
+
+        transform:
+            scale(.85);
+    }
+
+}
+
+
+/* =========================================================
+   GRAPH AXIS NUMBERS
+========================================================= */
+
+.graph-axis {
+    position: absolute;
+
+    bottom: 4px;
+
+    color: var(--muted-2);
+
+    font-size: 9px;
+
+    z-index: 4;
+}
+
+.a0 {
+    left: 3px;
+}
+
+.a4 {
+    left: 25%;
+
+    transform:
+        translateX(-50%);
+}
+
+.a8 {
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+}
+
+.a12 {
+    left: 75%;
+
+    transform:
+        translateX(-50%);
+}
+
+.a16 {
+    right: 3px;
+}
+
+
+/* =========================================================
+   LEGEND
+========================================================= */
+
+.legend {
+    display: flex;
+
+    justify-content: center;
+
+    margin-top: 15px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+.legend-item {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+}
+
+.red {
+    background: var(--red);
+
+    box-shadow:
+        0 0 10px
+        rgba(255,104,94,.55);
+}
+
+.blue {
+    background: var(--cyan);
+
+    box-shadow:
+        0 0 10px
+        rgba(85,220,255,.55);
+}
+
+
+/* =========================================================
+   EXPLANATION
+========================================================= */
+
+.explanation {
+    position: relative;
+
+    margin-top: 24px;
+
+    padding:
+        28px
+        30px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    border-radius:
+        var(--radius-md);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.06),
+            rgba(255,255,255,.025)
+        );
+
+    box-shadow:
+        0 20px 70px rgba(0,0,0,.25);
+
+    text-align: center;
+}
+
+.explanation::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 0;
+
+    width: 140px;
+    height: 1px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--cyan),
+            transparent
+        );
+
+    box-shadow:
+        0 0 20px
+        rgba(85,220,255,.5);
+}
+
+.explanation h3 {
+    margin-bottom: 14px;
+
+    color: var(--orange);
+
+    font-size: 23px;
+}
+
+.explanation p {
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    color: #b7c9d9;
+
+    line-height: 1.75;
+}
+
+
+/* =========================================================
+   PRIMARY BUTTON
+========================================================= */
+
+.primary-button {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    margin:
+        30px
+        auto
+        0;
+
+    padding:
+        16px
+        28px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    border-radius: 999px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #119fc8,
+            #385aff
+        );
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 14px 35px
+        rgba(35,117,255,.22);
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        filter .25s ease;
+}
+
+.primary-button:hover {
+
+    transform:
+        translateY(-3px)
+        scale(1.015);
+
+    box-shadow:
+        0 18px 45px
+        rgba(35,117,255,.35);
+
+    filter:
+        brightness(1.08);
+}
+
+.primary-button:active {
+
+    transform:
+        translateY(0)
+        scale(.99);
+}
+
+
+/* =========================================================
+   PAGE 2
+========================================================= */
+
+.back-button {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 28px;
+
+    padding:
+        10px
+        16px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,.035);
+
+    color: var(--muted);
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+.back-button:hover {
+
+    color: white;
+
+    border-color:
+        rgba(255,255,255,.2);
+
+    transform:
+        translateX(-2px);
+}
+
+.simulator {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.3fr)
+        minmax(320px, .7fr);
+
+    gap: 22px;
+}
+
+
+/* =========================================================
+   SCENE
+========================================================= */
+
+.scene {
+    position: relative;
+
+    min-height: 570px;
+
+    overflow: hidden;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    border-radius:
+        var(--radius-lg);
+
+    background:
+        radial-gradient(
+            circle at 50% 46%,
+            #183d57 0%,
+            #0a1b2b 45%,
+            #020811 100%
+        );
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.38);
+
+    isolation: isolate;
+}
+
+.scene::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 50% 50%,
+            transparent 0,
+            transparent 32%,
+            rgba(85,220,255,.025) 65%,
+            transparent 100%
+        );
+
+    pointer-events: none;
+}
+
+.scene::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            125deg,
+            rgba(85,220,255,.045),
+            transparent 25%,
+            transparent 75%,
+            rgba(255,180,84,.035)
+        );
+}
+
+.scene-label {
+    position: absolute;
+
+    top: 17px;
+    left: 20px;
+
+    z-index: 20;
+
+    color: #8199ad;
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+}
+
+.scene-scale {
+    position: absolute;
+
+    right: 20px;
+    top: 17px;
+
+    z-index: 20;
+
+    color: #61778b;
+
+    font-size: 10px;
+
+    letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   BACKGROUND PARTICLES
+========================================================= */
+
+.background-particle {
+    position: absolute;
+
+    width: 4px;
+    height: 4px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(110,220,255,.4);
+
+    box-shadow:
+        0 0 12px
+        rgba(90,211,255,.25);
+
+    animation:
+        backgroundFloat
+        8s
+        linear
+        infinite;
+}
+
+.bp1 {
+    left:10%;
+    top:19%;
+    animation-delay:0s;
+}
+
+.bp2 {
+    left:83%;
+    top:23%;
+    animation-delay:1.2s;
+}
+
+.bp3 {
+    left:27%;
+    top:79%;
+    animation-delay:2.4s;
+}
+
+.bp4 {
+    left:72%;
+    top:76%;
+    animation-delay:3.3s;
+}
+
+.bp5 {
+    left:15%;
+    top:54%;
+    animation-delay:4.1s;
+}
+
+.bp6 {
+    left:90%;
+    top:61%;
+    animation-delay:5.1s;
+}
+
+.bp7 {
+    left:54%;
+    top:13%;
+    animation-delay:6s;
+}
+
+.bp8 {
+    left:48%;
+    top:88%;
+    animation-delay:6.8s;
+}
+
+@keyframes backgroundFloat {
+
+    0% {
+
+        transform:
+            translate3d(0,0,0)
+            scale(.8);
+
+        opacity: .1;
+    }
+
+    45% {
+        opacity: .65;
+    }
+
+    100% {
+
+        transform:
+            translate3d(60px,-55px,0)
+            scale(1.2);
+
+        opacity: 0;
+    }
+
+}
+
+
+/* =========================================================
+   CELLS
+========================================================= */
+
+.cell {
+    position: absolute;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 30% 25%,
+            #ffd0dd 0%,
+            #db638c 30%,
+            #8d2f5c 63%,
+            #351021 100%
+        );
+
+    border:
+        2px solid
+        rgba(255,155,195,.26);
+
+    box-shadow:
+        0 0 28px
+        rgba(206,86,134,.18),
+
+        inset
+        -15px
+        -20px
+        30px
+        rgba(0,0,0,.18);
+
+    z-index: 4;
+}
+
+.cell::before {
+    content: "";
+
+    position: absolute;
+
+    width: 44%;
+    height: 44%;
+
+    left: 28%;
+    top: 28%;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #ffdd91,
+            #984833 68%,
+            transparent 72%
+        );
+
+    opacity: .85;
+}
+
+.cell::after {
+    content: "";
+
+    position: absolute;
+
+    left: 17%;
+    top: 14%;
+
+    width: 15%;
+    height: 12%;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.18);
+
+    filter:
+        blur(2px);
+}
+
+.cell1 {
+
+    width: 140px;
+    height: 140px;
+
+    left: 4%;
+    top: 17%;
+
+    animation:
+        floatCellA
+        6.2s
+        ease-in-out
+        infinite;
+}
+
+.cell2 {
+
+    width: 106px;
+    height: 106px;
+
+    right: 6%;
+    top: 12%;
+
+    animation:
+        floatCellB
+        7.1s
+        ease-in-out
+        infinite;
+}
+
+.cell3 {
+
+    width: 155px;
+    height: 155px;
+
+    right: 7%;
+    bottom: 4%;
+
+    animation:
+        floatCellA
+        7.6s
+        ease-in-out
+        infinite
+        reverse;
+}
+
+.cell4 {
+
+    width: 86px;
+    height: 86px;
+
+    left: 12%;
+    bottom: 8%;
+
+    animation:
+        floatCellB
+        6s
+        ease-in-out
+        infinite
+        reverse;
+}
+
+.cell5 {
+
+    width: 72px;
+    height: 72px;
+
+    left: 43%;
+    top: 11%;
+
+    animation:
+        floatCellA
+        6.8s
+        ease-in-out
+        infinite;
+}
+
+.cell6 {
+
+    width: 58px;
+    height: 58px;
+
+    left: 67%;
+    bottom: 22%;
+
+    opacity: .72;
+
+    animation:
+        floatCellB
+        5.7s
+        ease-in-out
+        infinite;
+}
+
+@keyframes floatCellA {
+
+    0%, 100% {
+
+        transform:
+            translate3d(0,0,0)
+            rotate(0deg);
+    }
+
+    50% {
+
+        transform:
+            translate3d(8px,-11px,0)
+            rotate(4deg);
+    }
+
+}
+
+@keyframes floatCellB {
+
+    0%, 100% {
+
+        transform:
+            translate3d(0,0,0)
+            rotate(0deg);
+    }
+
+    50% {
+
+        transform:
+            translate3d(-11px,9px,0)
+            rotate(-4deg);
+    }
+
+}
+
+
+/* =========================================================
+   TARGET
+========================================================= */
+
+.target-ring {
+
+    position: absolute;
+
+    width: 230px;
+    height: 230px;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%,-50%);
+
+    border:
+        1px dashed
+        rgba(255,180,84,.42);
+
+    border-radius: 50%;
+
+    z-index: 2;
+}
+
+.target-ring::before,
+.target-ring::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 14px;
+
+    border:
+        1px solid
+        rgba(255,180,84,.08);
+
+    border-radius: 50%;
+}
+
+.target-ring::after {
+
+    inset: 34px;
+
+    border-color:
+        rgba(255,180,84,.055);
+}
+
+.target-rotator {
+
+    position: absolute;
+
+    inset: -1px;
+
+    border-radius: 50%;
+
+    animation:
+        targetSpin
+        14s
+        linear
+        infinite;
+}
+
+.target-rotator::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: -3px;
+
+    width: 7px;
+    height: 7px;
+
+    transform:
+        translateX(-50%);
+
+    border-radius: 50%;
+
+    background:
+        var(--orange);
+
+    box-shadow:
+        0 0 15px
+        rgba(255,180,84,.9);
+}
+
+@keyframes targetSpin {
+
+    to {
+        transform:
+            rotate(360deg);
+    }
+
+}
+
+.target-label {
+
+    position: absolute;
+
+    left: 50%;
+
+    top:
+        calc(
+            50% + 128px
+        );
+
+    transform:
+        translateX(-50%);
+
+    z-index: 8;
+
+    white-space: nowrap;
+
+    color: #eac681;
+
+    font-size: 10px;
+
+    letter-spacing: 1.7px;
+}
+
+
+/* =========================================================
+   POLYMER DEPOT
+========================================================= */
+
+.depot-shell {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 134px;
+    height: 134px;
+
+    transform:
+        translate(-50%,-50%);
+
+    z-index: 10;
+}
+
+.depot {
+
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 27% 23%,
+            #ffe7b7 0%,
+            #ffc15f 16%,
+            #e97822 43%,
+            #75240e 74%,
+            #260904 100%
+        );
+
+    border:
+        2px solid
+        rgba(255,200,130,.35);
+
+    box-shadow:
+
+        0 0 30px
+        rgba(255,157,50,.35),
+
+        0 0 80px
+        rgba(255,148,40,.1),
+
+        inset
+        -18px
+        -22px
+        32px
+        rgba(0,0,0,.34);
+
+    animation:
+        depotPulse
+        3s
+        ease-in-out
+        infinite;
+}
+
+.depot::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 11px;
+
+    border:
+        1px solid
+        rgba(255,238,206,.16);
+
+    border-radius: 50%;
+}
+
+.depot-label {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    color: #fff8eb;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    text-align: center;
+
+    line-height: 1.45;
+}
+
+.depot-pulse {
+
+    position: absolute;
+
+    inset: -7px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid
+        rgba(255,180,84,.55);
+
+    opacity: 0;
+}
+
+.scene.release-pulse .depot-pulse {
+
+    animation:
+        releaseWave
+        1.3s
+        ease-out;
+
+}
+
+@keyframes releaseWave {
+
+    0% {
+
+        transform:
+            scale(.86);
+
+        opacity: .9;
+    }
+
+    100% {
+
+        transform:
+            scale(1.42);
+
+        opacity: 0;
+    }
+
+}
+
+@keyframes depotPulse {
+
+    0%, 100% {
+
+        transform:
+            scale(1);
+    }
+
+    50% {
+
+        transform:
+            scale(1.035);
+    }
+
+}
+
+
+/* =========================================================
+   DRUG PARTICLES
+========================================================= */
+
+.drug {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 10px;
+    height: 10px;
+
+    margin-left: -5px;
+    margin-top: -5px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #fff,
+            #7be8ff 35%,
+            #1acdf7 70%,
+            #0c7390 100%
+        );
+
+    box-shadow:
+
+        0 0 14px
+        rgba(50,221,255,.9),
+
+        0 0 28px
+        rgba(50,221,255,.35);
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    z-index: 13;
+}
+
+.drug::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: -5px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid
+        rgba(114,232,255,.16);
+}
+
+
+/* =========================================================
+   SCENE TAGS
+========================================================= */
+
+.scene-tag {
+
+    position: absolute;
+
+    z-index: 20;
+
+    padding:
+        8px
+        11px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    border-radius: 999px;
+
+    background:
+        rgba(2,8,16,.42);
+
+    backdrop-filter:
+        blur(8px);
+
+    color: #7891a5;
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+.tag-cells {
+
+    left: 20px;
+
+    bottom: 20px;
+}
+
+.tag-release {
+
+    right: 20px;
+
+    bottom: 20px;
+}
+
+
+/* =========================================================
+   INFORMATION PANEL
+========================================================= */
+
+.sim-info {
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 30px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    border-radius:
+        var(--radius-lg);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.075),
+            rgba(255,255,255,.03)
+        );
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.38);
+
+    backdrop-filter:
+        blur(14px);
+}
+
+.sim-info h2 {
+
+    font-size: 29px;
+
+    line-height: 1.15;
+
+    margin-bottom: 8px;
+}
+
+.small {
+
+    color: #829bb0;
+
+    line-height: 1.6;
+
+    font-size: 13px;
+
+    margin-bottom: 25px;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-row {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    margin-bottom: 12px;
+}
+
+.status-light {
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background:
+        var(--cyan);
+
+    box-shadow:
+        0 0 14px
+        rgba(85,220,255,.8);
+}
+
+.sim-info.paused .status-light {
+
+    background:
+        var(--orange);
+
+    box-shadow:
+        0 0 14px
+        rgba(255,180,84,.8);
+}
+
+.status {
+
+    color: var(--cyan);
+
+    font-size: 12px;
+
+    letter-spacing: 1.4px;
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+.timer {
+
+    font-size: 57px;
+
+    line-height: 1;
+
+    font-weight: 800;
+
+    letter-spacing: -2px;
+
+    margin-bottom: 18px;
+}
+
+.timer-unit {
+
+    color: var(--muted-2);
+
+    font-size: 20px;
+
+    letter-spacing: 0;
+
+    margin-left: 4px;
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.progress-meta {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 8px;
+
+    color: var(--muted-2);
+
+    font-size: 10px;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+.progress-bg {
+
+    width: 100%;
+
+    height: 10px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,.075);
+}
+
+.progress {
+
+    width: 0%;
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--cyan),
+            #5a83ff,
+            var(--orange)
+        );
+
+    box-shadow:
+        0 0 18px
+        rgba(85,220,255,.35);
+
+    transition:
+        width .08s linear;
+}
+
+
+/* =========================================================
+   DOSE COUNTER
+========================================================= */
+
+.dose-count {
+
+    display: flex;
+
+    align-items: baseline;
+
+    justify-content: space-between;
+
+    padding:
+        19px
+        0
+        18px;
+
+    margin-top: 5px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.07);
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+.dose-number {
+
+    color: white;
+
+    font-size: 31px;
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   STAGES
+========================================================= */
+
+.stage-strip {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap: 6px;
+
+    margin:
+        18px
+        0;
+}
+
+.stage {
+
+    height: 4px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    overflow: hidden;
+}
+
+.stage-fill {
+
+    width: 0%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--cyan),
+            var(--blue)
+        );
+
+    transition:
+        width .35s ease;
+}
+
+.stage.active .stage-fill {
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   EVENT
+========================================================= */
+
+.event {
+
+    min-height: 155px;
+
+    padding: 19px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.09);
+
+    border-radius:
+        var(--radius-sm);
+
+    background:
+        rgba(255,255,255,.035);
+}
+
+.event-kicker {
+
+    color: var(--orange);
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.8px;
+
+    margin-bottom: 9px;
+}
+
+.event-title {
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    margin-bottom: 7px;
+}
+
+.event-text {
+
+    color: #9fb4c6;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   CONTROLS
+========================================================= */
+
+.controls {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        1fr;
+
+    gap: 10px;
+
+    margin-top: 18px;
+}
+
+.control-button {
+
+    padding:
+        14px
+        12px;
+
+    border-radius: 13px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    background:
+        rgba(255,255,255,.045);
+
+    color: white;
+
+    cursor: pointer;
+
+    font-weight: 700;
+
+    transition:
+        transform .2s ease,
+        background .2s ease;
+}
+
+.control-button:hover {
+
+    transform:
+        translateY(-2px);
+
+    background:
+        rgba(255,255,255,.08);
+}
+
+.control-button.primary {
+
+    border: none;
+
+    background:
+        linear-gradient(
+            135deg,
+            #139ec8,
+            #3f61ff
+        );
+
+    box-shadow:
+        0 10px 25px
+        rgba(43,113,255,.2);
+}
+
+
+/* =========================================================
+   SCIENTIFIC NOTE
+========================================================= */
+
+.scientific-note {
+
+    margin-top: 18px;
+
+    color: #647e92;
+
+    font-size: 10px;
+
+    line-height: 1.55;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .compare {
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .simulator {
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .scene {
+
+        min-height: 500px;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .page {
+
+        padding:
+            18px
+            14px
+            45px;
+    }
+
+    .topbar {
+
+        margin-bottom: 30px;
+    }
+
+    .language-box {
+
+        padding:
+            28px
+            22px;
+    }
+
+    .language-buttons {
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .card,
+    .sim-info {
+
+        padding: 22px;
+    }
+
+    .hero-title {
+
+        font-size: 46px;
+    }
+
+    .graph {
+
+        height: 210px;
+    }
+
+    .scene {
+
+        min-height: 450px;
+    }
+
+    .cell1 {
+
+        width: 105px;
+        height: 105px;
+    }
+
+    .cell2 {
+
+        width: 78px;
+        height: 78px;
+    }
+
+    .cell3 {
+
+        width: 115px;
+        height: 115px;
+    }
+
+    .cell4 {
+
+        width: 66px;
+        height: 66px;
+    }
+
+    .cell5 {
+
+        width: 56px;
+        height: 56px;
+    }
+
+    .target-ring {
+
+        width: 190px;
+        height: 190px;
+    }
+
+    .depot-shell {
+
+        width: 108px;
+        height: 108px;
+    }
+
+    .target-label {
+
+        top:
+            calc(
+                50% + 106px
+            );
+    }
+
+    .timer {
+
+        font-size: 48px;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration:
+            .001ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        scroll-behavior:
+            auto !important;
+
+        transition-duration:
+            .001ms !important;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- =========================================================
+     LANGUAGE SELECTION
+========================================================= -->
+
+<div
+    class="language-modal"
+    id="languageModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="languageTitle"
+>
+
+```
+<div class="language-box">
+
+    <div class="language-icon">
+        <span>🧬</span>
+    </div>
+
+    <h2 id="languageTitle">
+        Choose your language
+    </h2>
+
+    <p>
+        Válaszd ki, hogy milyen nyelven szeretnéd látni a bemutatót.
+    </p>
+
+    <div class="language-buttons">
+
+        <button
+            class="language-button"
+            data-language="en"
+        >
+
+            <strong>
+                English
+            </strong>
+
+            <span>
+                Presentation language
+            </span>
+
+        </button>
+
+
+        <button
+            class="language-button"
+            data-language="hu"
+        >
+
+            <strong>
+                Magyar
+            </strong>
+
+            <span>
+                Bemutató nyelve
+            </span>
+
+        </button>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+<!-- =========================================================
+     APPLICATION
+========================================================= -->
+
+<div id="app">
+
+<!-- =========================================================
+     PAGE 1
+========================================================= -->
+
+<section
+    id="page1"
+    class="page active"
+>
+
+```
+<div class="topbar">
+
+    <div class="brand">
+
+        <span class="brand-dot"></span>
+
+        <span>
+            ROBERT LANGER · BIOMEDICAL ENGINEERING
+        </span>
+
+    </div>
+
+
+    <div class="language-switcher">
+
+        <button
+            class="lang-option active"
+            data-switch-language="en"
+        >
+            EN
+        </button>
+
+        <button
+            class="lang-option"
+            data-switch-language="hu"
+        >
+            HU
+        </button>
+
+    </div>
+
+</div>
+
+
+<div class="container">
+
+
+    <h1 class="hero-title">
+
+        ROBERT
+        <span class="highlight">
+            LANGER
+        </span>
+
+    </h1>
+
+
+    <p
+        class="subtitle"
+        data-i18n="heroSubtitle"
+    >
+        Exploring the idea behind controlled drug delivery.
+    </p>
+
+
+    <!-- =================================================
+         COMPARISON
+    ================================================== -->
+
+    <div class="compare">
+
+
+        <!-- TRADITIONAL CARD -->
+
+        <article class="card traditional">
+
+            <div class="card-header">
+
+                <div class="card-number">
+                    01 · Traditional approach
+                </div>
+
+                <h2
+                    data-i18n="traditionalTitle"
+                >
+                    Traditional dosing
+                </h2>
+
+            </div>
+
+
+            <p
+                class="card-description"
+                data-i18n="traditionalText"
+            >
+                A dose is taken → drug concentration rises →
+                concentration falls → another dose is needed.
+            </p>
+
+
+            <div class="graph-wrap">
+
+                <div
+                    class="graph"
+                    id="traditionalGraph"
+                >
+
+                    <div
+                        class="graph-label"
+                        data-i18n="concentration"
+                    >
+                        Drug concentration
+                    </div>
+
+
+                    <div
+                        class="time-label"
+                        data-i18n="time"
+                    >
+                        Time
+                    </div>
+
+
+                    <svg
+                        viewBox="0 0 600 240"
+                        preserveAspectRatio="none"
+                        aria-label="Traditional dosing graph"
+                    >
+
+                        <path
+                            class="graph-line traditional-line"
+                            pathLength="1"
+                            d="
+                                M0 218
+                                L35 218
+                                L58 38
+                                L82 218
+                                L135 218
+                                L158 38
+                                L182 218
+                                L235 218
+                                L258 38
+                                L282 218
+                                L335 218
+                                L358 38
+                                L382 218
+                                L435 218
+                                L458 38
+                                L482 218
+                                L535 218
+                                L558 38
+                                L582 218
+                                L600 218
+                            "
+                        />
+
+
+                        <circle
+                            class="graph-peak peak-1"
+                            cx="58"
+                            cy="38"
+                            r="8"
+                            fill="#ff685e"
+                        />
+
+                        <circle
+                            class="graph-peak peak-2"
+                            cx="158"
+                            cy="38"
+                            r="8"
+                            fill="#ff685e"
+                        />
+
+                        <circle
+                            class="graph-peak peak-3"
+                            cx="258"
+                            cy="38"
+                            r="8"
+                            fill="#ff685e"
+                        />
+
+                        <circle
+                            class="graph-peak peak-4"
+                            cx="358"
+                            cy="38"
+                            r="8"
+                            fill="#ff685e"
+                        />
+
+                        <circle
+                            class="graph-peak peak-5"
+                            cx="458"
+                            cy="38"
+                            r="8"
+                            fill="#ff685e"
+                        />
+
+                        <circle
+                            class="graph-peak peak-6"
+                            cx="558"
+                            cy="38"
+                            r="8"
+                            fill="#ff685e"
+                        />
+
+                    </svg>
+
+
+                    <span class="graph-axis a0">
+                        0h
+                    </span>
+
+                    <span class="graph-axis a4">
+                        4h
+                    </span>
+
+                    <span class="graph-axis a8">
+                        8h
+                    </span>
+
+                    <span class="graph-axis a12">
+                        12h
+                    </span>
+
+                    <span class="graph-axis a16">
+                        16h
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="legend">
+
+                <span class="legend-item">
+
+                    <span class="dot red"></span>
+
+                    <span data-i18n="peakLegend">
+                        Repeated dose peaks
+                    </span>
+
+                </span>
+
+            </div>
+
+        </article>
+
+
+        <!-- CONTROLLED CARD -->
+
+        <article class="card controlled">
+
+            <div class="card-header">
+
+                <div class="card-number">
+                    02 · Controlled approach
+                </div>
+
+                <h2
+                    data-i18n="controlledTitle"
+                >
+                    Controlled release
+                </h2>
+
+            </div>
+
+
+            <p
+                class="card-description"
+                data-i18n="controlledText"
+            >
+                A delivery system can release an active substance
+                gradually over an extended period.
+            </p>
+
+
+            <div class="graph-wrap">
+
+                <div
+                    class="graph"
+                    id="controlledGraph"
+                >
+
+                    <div
+                        class="graph-label"
+                        data-i18n="concentration"
+                    >
+                        Drug concentration
+                    </div>
+
+
+                    <div
+                        class="time-label"
+                        data-i18n="time"
+                    >
+                        Time
+                    </div>
+
+
+                    <svg
+                        viewBox="0 0 600 240"
+                        preserveAspectRatio="none"
+                        aria-label="Controlled release graph"
+                    >
+
+                        <path
+                            class="graph-line controlled-line"
+                            pathLength="1"
+                            d="
+                                M0 218
+                                C48 199 84 152 132 124
+                                C173 100 218 89 266 91
+                                C321 94 360 87 414 86
+                                C474 84 528 89 600 84
+                            "
+                        />
+
+                    </svg>
+
+
+                    <span class="graph-axis a0">
+                        0h
+                    </span>
+
+                    <span class="graph-axis a4">
+                        4h
+                    </span>
+
+                    <span class="graph-axis a8">
+                        8h
+                    </span>
+
+                    <span class="graph-axis a12">
+                        12h
+                    </span>
+
+                    <span class="graph-axis a16">
+                        16h
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="legend">
+
+                <span class="legend-item">
+
+                    <span class="dot blue"></span>
+
+                    <span data-i18n="gradualLegend">
+                        Gradual release
+                    </span>
+
+                </span>
+
+            </div>
+
+        </article>
+
+    </div>
+
+
+    <!-- =================================================
+         EXPLANATION
+    ================================================== -->
+
+    <section class="explanation">
+
+        <h3 data-i18n="whyTitle">
+            Why does controlled release matter?
+        </h3>
+
+
+        <p data-i18n="whyText1">
+            Instead of repeatedly delivering a large separate dose,
+            a delivery system can be designed to control how quickly
+            an active substance becomes available.
+        </p>
+
+
+        <br>
+
+
+        <p data-i18n="whyText2">
+            Robert Langer's research helped establish important
+            approaches to using polymers and other materials to
+            control the release of substances.
+        </p>
+
+    </section>
+
+
+    <button
+        class="primary-button"
+        id="openSimulation"
+    >
+
+        <span data-i18n="seeSystem">
+            SEE THE DRUG DELIVERY SYSTEM
+        </span>
+
+        <span>
+            →
+        </span>
+
+    </button>
+
+</div>
+```
+
+</section>
+
+<!-- =========================================================
+     PAGE 2
+========================================================= -->
+
+<section
+    id="page2"
+    class="page"
+>
+
+```
+<div class="topbar">
+
+    <div class="brand">
+
+        <span class="brand-dot"></span>
+
+        <span>
+            CONTROLLED RELEASE · INTERACTIVE MODEL
+        </span>
+
+    </div>
+
+
+    <div class="language-switcher">
+
+        <button
+            class="lang-option active"
+            data-switch-language="en"
+        >
+            EN
+        </button>
+
+        <button
+            class="lang-option"
+            data-switch-language="hu"
+        >
+            HU
+        </button>
+
+    </div>
+
+</div>
+
+
+<div class="container">
+
+
+    <button
+        class="back-button"
+        id="backButton"
+    >
+
+        <span>
+            ←
+        </span>
+
+        <span data-i18n="back">
+            Back
+        </span>
+
+    </button>
+
+
+    <h1 class="hero-title">
+
+        CONTROLLED
+
+        <span class="highlight">
+            RELEASE
+        </span>
+
+    </h1>
+
+
+    <p
+        class="subtitle"
+        data-i18n="simSubtitle"
+    >
+        Watch a polymer depot release drug particles into a
+        simplified microscopic environment.
+    </p>
+
+
+    <div class="simulator">
+
+
+        <!-- =================================================
+             MICROSCOPIC SCENE
+        ================================================== -->
+
+        <div
+            class="scene"
+            id="scene"
+        >
+
+
+            <div
+                class="scene-label"
+                data-i18n="sceneLabel"
+            >
+                MICROSCOPIC VIEW · SCHEMATIC
+            </div>
+
+
+            <div
+                class="scene-scale"
+                data-i18n="sceneScale"
+            >
+                ILLUSTRATIVE MODEL
+            </div>
+
+
+            <!-- BACKGROUND PARTICLES -->
+
+            <div class="background-particle bp1"></div>
+            <div class="background-particle bp2"></div>
+            <div class="background-particle bp3"></div>
+            <div class="background-particle bp4"></div>
+            <div class="background-particle bp5"></div>
+            <div class="background-particle bp6"></div>
+            <div class="background-particle bp7"></div>
+            <div class="background-particle bp8"></div>
+
+
+            <!-- CELLS -->
+
+            <div class="cell cell1"></div>
+            <div class="cell cell2"></div>
+            <div class="cell cell3"></div>
+            <div class="cell cell4"></div>
+            <div class="cell cell5"></div>
+            <div class="cell cell6"></div>
+
+
+            <!-- TARGET -->
+
+            <div class="target-ring">
+
+                <div class="target-rotator"></div>
+
+            </div>
+
+
+            <div
+                class="target-label"
+                data-i18n="target"
+            >
+                TARGET REGION · SCHEMATIC
+            </div>
+
+
+            <!-- POLYMER DEPOT -->
+
+            <div class="depot-shell">
+
+                <div class="depot">
+
+                    <div
+                        class="depot-label"
+                        data-i18n="polymerDepot"
+                    >
+                        POLYMER<br>
+                        DEPOT
+                    </div>
+
+                </div>
+
+                <div class="depot-pulse"></div>
+
+            </div>
+
+
+            <!-- DRUG PARTICLES -->
+
+            <div
+                class="drug"
+                data-particle="0"
+            ></div>
+
+            <div
+                class="drug"
+                data-particle="1"
+            ></div>
+
+            <div
+                class="drug"
+                data-particle="2"
+            ></div>
+
+            <div
+                class="drug"
+                data-particle="3"
+            ></div>
+
+            <div
+                class="drug"
+                data-particle="4"
+            ></div>
+
+            <div
+                class="drug"
+                data-particle="5"
+            ></div>
+
+            <div
+                class="drug"
+                data-particle="6"
+            ></div>
+
+            <div
+                class="drug"
+                data-particle="7"
+            ></div>
+
+
+            <!-- SCENE TAGS -->
+
+            <div
+                class="scene-tag tag-cells"
+                data-i18n="cellsTag"
+            >
+                Cells · schematic
+            </div>
+
+
+            <div
+                class="scene-tag tag-release"
+                data-i18n="releaseTag"
+            >
+                Active substance
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             INFORMATION PANEL
+        ================================================== -->
+
+        <aside
+            class="sim-info"
+            id="simInfo"
+        >
+
+
+            <h2 data-i18n="simTitle">
+                Drug Delivery Simulator
+            </h2>
+
+
+            <p
+                class="small"
+                data-i18n="simDisclaimer"
+            >
+                Illustrative controlled-release model.
+                The microscopic scene is schematic, not a
+                representation of an actual patient.
+            </p>
+
+
+            <!-- STATUS -->
+
+            <div class="status-row">
+
+                <span class="status-light"></span>
+
+                <div
+                    class="status"
+                    id="status"
+                >
+                    SYSTEM READY
+                </div>
+
+            </div>
+
+
+            <!-- TIMER -->
+
+            <div class="timer">
+
+                <span id="hours">
+                    0.0
+                </span>
+
+                <span
+                    class="timer-unit"
+                    data-i18n="hoursUnit"
+                >
+                    h simulated
+                </span>
+
+            </div>
+
+
+            <!-- PROGRESS -->
+
+            <div class="progress-meta">
+
+                <span data-i18n="elapsed">
+                    Simulation
+                </span>
+
+                <span id="percent">
+                    0%
+                </span>
+
+            </div>
+
+
+            <div class="progress-bg">
+
+                <div
+                    class="progress"
+                    id="progress"
+                ></div>
+
+            </div>
+
+
+            <!-- DOSE -->
+
+            <div class="dose-count">
+
+                <span data-i18n="released">
+                    Drug particles released
+                </span>
+
+                <span
+                    class="dose-number"
+                    id="dose"
+                >
+                    0
+                </span>
+
+            </div>
+
+
+            <!-- STAGES -->
+
+            <div
+                class="stage-strip"
+                id="stageStrip"
+            >
+
+                <div class="stage">
+                    <div class="stage-fill"></div>
+                </div>
+
+                <div class="stage">
+                    <div class="stage-fill"></div>
+                </div>
+
+                <div class="stage">
+                    <div class="stage-fill"></div>
+                </div>
+
+                <div class="stage">
+                    <div class="stage-fill"></div>
+                </div>
+
+                <div class="stage">
+                    <div class="stage-fill"></div>
+                </div>
+
+            </div>
+
+
+            <!-- EVENT -->
+
+            <div class="event">
+
+                <div
+                    class="event-kicker"
+                    id="eventKicker"
+                >
+                    WAITING
+                </div>
+
+
+                <div
+                    class="event-title"
+                    id="eventTitle"
+                >
+                    Ready to begin
+                </div>
+
+
+                <div
+                    class="event-text"
+                    id="eventText"
+                >
+                    Press START to see the polymer depot
+                    gradually release active substance.
+                </div>
+
+            </div>
+
+
+            <!-- CONTROLS -->
+
+            <div class="controls">
+
+                <button
+                    class="control-button primary"
+                    id="startButton"
+                >
+
+                    ▶
+
+                    <span>
+                        START
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="control-button"
+                    id="resetButton"
+                >
+
+                    ↻
+
+                    <span>
+                        RESET
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <p
+                class="scientific-note"
+                data-i18n="scientificNote"
+            >
+                This animation illustrates the concept of
+                controlled release rather than real
+                pharmacokinetic patient data.
+            </p>
+
+        </aside>
+
+    </div>
+
+</div>
+```
+
+</section>
+
+</div>
+
+<script>
+
+/* =========================================================
+   TRANSLATIONS
+========================================================= */
+
+const translations = {
+
+    en: {
+
+        heroSubtitle:
+            "Exploring the idea behind controlled drug delivery.",
+
+        traditionalTitle:
+            "Traditional dosing",
+
+        traditionalText:
+            "A dose is taken → drug concentration rises → concentration falls → another dose is needed.",
+
+        controlledTitle:
+            "Controlled release",
+
+        controlledText:
+            "A delivery system can release an active substance gradually over an extended period.",
+
+        concentration:
+            "Drug concentration",
+
+        time:
+            "Time",
+
+        peakLegend:
+            "Repeated dose peaks",
+
+        gradualLegend:
+            "Gradual release",
+
+        whyTitle:
+            "Why does controlled release matter?",
+
+        whyText1:
+            "Instead of repeatedly delivering a large separate dose, a delivery system can be designed to control how quickly an active substance becomes available.",
+
+        whyText2:
+            "Robert Langer's research helped establish important approaches to using polymers and other materials to control the release of substances.",
+
+        seeSystem:
+            "SEE THE DRUG DELIVERY SYSTEM",
+
+        back:
+            "Back",
+
+        simSubtitle:
+            "Watch a polymer depot release drug particles into a simplified microscopic environment.",
+
+        sceneLabel:
+            "MICROSCOPIC VIEW · SCHEMATIC",
+
+        sceneScale:
+            "ILLUSTRATIVE MODEL",
+
+        target:
+            "TARGET REGION · SCHEMATIC",
+
+        polymerDepot:
+            "POLYMER<br>DEPOT",
+
+        cellsTag:
+            "Cells · schematic",
+
+        releaseTag:
+            "Active substance",
+
+        simTitle:
+            "Drug Delivery Simulator",
+
+        simDisclaimer:
+            "Illustrative controlled-release model. The microscopic scene is schematic, not a representation of an actual patient.",
+
+        ready:
+            "SYSTEM READY",
+
+        starting:
+            "DEPOT ACTIVATING",
+
+        releasing:
+            "RELEASING ACTIVE SUBSTANCE",
+
+        sustained:
+            "SUSTAINED DELIVERY",
+
+        continuing:
+            "DELIVERY CONTINUES",
+
+        complete:
+            "SIMULATION COMPLETE",
+
+        paused:
+            "SIMULATION PAUSED",
+
+        hoursUnit:
+            "h simulated",
+
+        elapsed:
+            "Simulation",
+
+        released:
+            "Drug particles released",
+
+        waiting:
+            "WAITING",
+
+        eventWaitingTitle:
+            "Ready to begin",
+
+        eventWaitingText:
+            "Press START to see the polymer depot gradually release active substance.",
+
+        systemStart:
+            "SYSTEM START",
+
+        systemStartText:
+            "The polymer depot is activated and begins releasing a small amount of active substance.",
+
+        gradual:
+            "GRADUAL RELEASE",
+
+        gradualText:
+            "Small amounts leave the depot over time instead of appearing as one large immediate pulse.",
+
+        sustainedTitle:
+            "STEADY DELIVERY",
+
+        sustainedText:
+            "The illustrative system continues releasing particles, demonstrating the principle of sustained delivery.",
+
+        extendedTitle:
+            "EXTENDED RELEASE",
+
+        extendedText:
+            "Released particles spread through the simplified environment while the cells remain visible around them.",
+
+        completeTitle:
+            "CONTROLLED RELEASE",
+
+        completeText:
+            "The illustrative 8-hour simulation is complete. The same design principle can be extended to longer-duration delivery systems.",
+
+        start:
+            "START",
+
+        pause:
+            "PAUSE",
+
+        resume:
+            "RESUME",
+
+        reset:
+            "RESET",
+
+        rerun:
+            "RUN AGAIN",
+
+        scientificNote:
+            "This animation illustrates the concept of controlled release rather than real pharmacokinetic patient data."
+
+    },
+
+
+    hu: {
+
+        heroSubtitle:
+            "A szabályozott gyógyszerleadás alapelvének bemutatása.",
+
+        traditionalTitle:
+            "Hagyományos adagolás",
+
+        traditionalText:
+            "Egy adag bevétele → a gyógyszerkoncentráció megemelkedik → majd lecsökken → újabb adag szükséges.",
+
+        controlledTitle:
+            "Szabályozott leadás",
+
+        controlledText:
+            "Egy gyógyszerleadó rendszer fokozatosan, hosszabb időn keresztül képes felszabadítani a hatóanyagot.",
+
+        concentration:
+            "Gyógyszerkoncentráció",
+
+        time:
+            "Idő",
+
+        peakLegend:
+            "Ismétlődő dóziscsúcsok",
+
+        gradualLegend:
+            "Fokozatos felszabadulás",
+
+        whyTitle:
+            "Miért fontos a szabályozott leadás?",
+
+        whyText1:
+            "Ahelyett, hogy ismételten egy nagy, különálló adagot juttatnánk be, egy leadó rendszer úgy tervezhető, hogy szabályozza, milyen gyorsan válik elérhetővé a hatóanyag.",
+
+        whyText2:
+            "Robert Langer kutatásai fontos módszerek kialakításához járultak hozzá, amelyek polimereket és más anyagokat alkalmaznak az anyagok felszabadulásának szabályozására.",
+
+        seeSystem:
+            "A GYÓGYSZERLEADÓ RENDSZER MEGTEKINTÉSE",
+
+        back:
+            "Vissza",
+
+        simSubtitle:
+            "Nézd meg, hogyan szabadíthat fel egy polimer depó gyógyszerrészecskéket egy leegyszerűsített mikroszkópos környezetben.",
+
+        sceneLabel:
+            "MIKROSZKÓPOS NÉZET · SEMATIKUS",
+
+        sceneScale:
+            "SZEMLÉLTETŐ MODELL",
+
+        target:
+            "CÉLTERÜLET · SEMATIKUS",
+
+        polymerDepot:
+            "POLIMER<br>DEPÓ",
+
+        cellsTag:
+            "Sejtek · sematikus",
+
+        releaseTag:
+            "Hatóanyag",
+
+        simTitle:
+            "Gyógyszerleadási szimulátor",
+
+        simDisclaimer:
+            "Szemléltető szabályozott-leadás modell. A mikroszkópos jelenet sematikus, nem valódi betegmodell ábrázolása.",
+
+        ready:
+            "RENDSZER KÉSZ",
+
+        starting:
+            "DEPÓ AKTIVÁLÁSA",
+
+        releasing:
+            "HATÓANYAG FELSZABADUL",
+
+        sustained:
+            "FENNTARTOTT LEADÁS",
+
+        continuing:
+            "A LEADÁS FOLYTATÓDIK",
+
+        complete:
+            "SZIMULÁCIÓ BEFEJEZVE",
+
+        paused:
+            "SZIMULÁCIÓ SZÜNETEL",
+
+        hoursUnit:
+            "óra szimulálva",
+
+        elapsed:
+            "Szimuláció",
+
+        released:
+            "Felszabadult gyógyszerrészecskék",
+
+        waiting:
+            "VÁRAKOZÁS",
+
+        eventWaitingTitle:
+            "Indításra kész",
+
+        eventWaitingText:
+            "Nyomd meg az INDÍTÁS gombot, hogy a polimer depó fokozatosan elkezdje felszabadítani a hatóanyagot.",
+
+        systemStart:
+            "RENDSZERINDÍTÁS",
+
+        systemStartText:
+            "A polimer depó aktiválódik, és kis mennyiségű hatóanyag fokozatos felszabadítását kezdi meg.",
+
+        gradual:
+            "FOKOZATOS LEADÁS",
+
+        gradualText:
+            "A hatóanyag kisebb mennyiségekben szabadul fel az idő során, nem pedig egyetlen nagy, azonnali impulzusként.",
+
+        sustainedTitle:
+            "EGYENLETES LEADÁS",
+
+        sustainedText:
+            "A szemléltető rendszer továbbra is részecskéket szabadít fel, bemutatva a fenntartott leadás alapelvét.",
+
+        extendedTitle:
+            "MEGHOSSZABBÍTOTT LEADÁS",
+
+        extendedText:
+            "A felszabadult részecskék szétterjednek az egyszerűsített környezetben, miközben a sejtek továbbra is láthatók körülöttük.",
+
+        completeTitle:
+            "SZABÁLYOZOTT LEADÁS",
+
+        completeText:
+            "A szemléltető 8 órás szimuláció befejeződött. Ugyanez az elv hosszabb időtartamú gyógyszerleadó rendszereknél is alkalmazható.",
+
+        start:
+            "INDÍTÁS",
+
+        pause:
+            "SZÜNET",
+
+        resume:
+            "FOLYTATÁS",
+
+        reset:
+            "ALAPHELYZET",
+
+        rerun:
+            "ÚJRAINDÍTÁS",
+
+        scientificNote:
+            "Az animáció a szabályozott gyógyszerleadás koncepcióját szemlélteti, nem valódi farmakokinetikai betegadatokat."
+
+    }
+
+};
+
+
+/* =========================================================
+   DOM REFERENCES
+========================================================= */
+
+const languageModal =
+    document.getElementById("languageModal");
+
+const app =
+    document.getElementById("app");
+
+const page1 =
+    document.getElementById("page1");
+
+const page2 =
+    document.getElementById("page2");
+
+const openSimulation =
+    document.getElementById("openSimulation");
+
+const backButton =
+    document.getElementById("backButton");
+
+const scene =
+    document.getElementById("scene");
+
+const simInfo =
+    document.getElementById("simInfo");
+
+const startButton =
+    document.getElementById("startButton");
+
+const resetButton =
+    document.getElementById("resetButton");
+
+const progress =
+    document.getElementById("progress");
+
+const percent =
+    document.getElementById("percent");
+
+const hours =
+    document.getElementById("hours");
+
+const dose =
+    document.getElementById("dose");
+
+const status =
+    document.getElementById("status");
+
+const eventKicker =
+    document.getElementById("eventKicker");
+
+const eventTitle =
+    document.getElementById("eventTitle");
+
+const eventText =
+    document.getElementById("eventText");
+
+const graphContainers =
+    [...document.querySelectorAll(".graph")];
+
+const drugs =
+    [...document.querySelectorAll(".drug")];
+
+const stageElements =
+    [...document.querySelectorAll(".stage")];
+
+let currentLanguage = "en";
+
+
+/* =========================================================
+   LANGUAGE
+========================================================= */
+
+function translate(key) {
+
+    return (
+        translations[currentLanguage][key]
+        ??
+        key
+    );
+
+}
+
+
+function setLanguage(language) {
+
+    currentLanguage =
+        language;
+
+    document.documentElement.lang =
+        language === "hu"
+            ? "hu"
+            : "en";
+
+
+    document
+        .querySelectorAll("[data-i18n]")
+        .forEach(element => {
+
+            const key =
+                element.dataset.i18n;
+
+            if (
+                translations[language][key]
+                === undefined
+            ) {
+
+                return;
+
+            }
+
+
+            element.innerHTML =
+                translations[language][key];
+
+        });
+
+
+    document
+        .querySelectorAll(".lang-option")
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+
+                button.dataset.switchLanguage
+                === language
+            );
+
+        });
+
+
+    updateDynamicText();
+
+}
+
+
+/* =========================================================
+   LANGUAGE BUTTONS
+========================================================= */
+
+document
+    .querySelectorAll("[data-language]")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                setLanguage(
+                    button.dataset.language
+                );
+
+
+                languageModal.classList.add(
+                    "hidden"
+                );
+
+
+                app.classList.add(
+                    "ready"
+                );
+
+
+                startGraphAnimation();
+
+            }
+        );
+
+    });
+
+
+document
+    .querySelectorAll("[data-switch-language]")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                setLanguage(
+                    button.dataset.switchLanguage
+                );
+
+            }
+        );
+
+    });
+
+
+/* =========================================================
+   GRAPH ANIMATION
+========================================================= */
+
+function startGraphAnimation() {
+
+    graphContainers.forEach(
+        graph => {
+
+            graph.classList.remove(
+                "playing"
+            );
+
+
+            /*
+               Force a browser reflow so the animation
+               always starts again from zero.
+            */
+
+            void graph.offsetWidth;
+
+
+            graph.classList.add(
+                "playing"
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   PAGE SWITCHING
+========================================================= */
+
+function showPage(page) {
+
+    page1.classList.remove(
+        "active"
+    );
+
+    page2.classList.remove(
+        "active"
+    );
+
+
+    page.classList.add(
+        "active"
+    );
+
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+
+    if (page === page1) {
+
+        startGraphAnimation();
+
+    }
+
+}
+
+
+openSimulation.addEventListener(
+    "click",
+    () => {
+
+        showPage(
+            page2
+        );
+
+        resetSimulation();
+
+    }
+);
+
+
+backButton.addEventListener(
+    "click",
+    () => {
+
+        stopSimulation();
+
+        showPage(
+            page1
+        );
+
+    }
+);
+
+
+/* =========================================================
+   SIMULATION CONFIG
+========================================================= */
+
+/*
+   24 seconds for a slower, readable presentation.
+*/
+
+const duration =
+    24000;
+
+
+/*
+   Destination positions of the drug particles.
+*/
+
+const particleEndpoints = [
+
+    [-0.31, -0.17],
+
+    [0.32, -0.13],
+
+    [0.31, 0.19],
+
+    [-0.30, 0.23],
+
+    [-0.18, -0.29],
+
+    [0.18, 0.29],
+
+    [-0.34, 0.03],
+
+    [0.34, 0.04]
+
+];
+
+
+/*
+   Fraction of the total simulation at which
+   each particle begins releasing.
+*/
+
+const releaseSchedule = [
+
+    0.08,
+
+    0.18,
+
+    0.30,
+
+    0.43,
+
+    0.56,
+
+    0.68,
+
+    0.79,
+
+    0.89
+
+];
+
+
+/*
+   Five educational sections.
+*/
+
+const simulationStages = [
+
+    {
+        start: 0.00,
+        end: 0.18,
+
+        statusKey:
+            "starting",
+
+        kickerKey:
+            "systemStart",
+
+        titleKey:
+            "systemStart",
+
+        textKey:
+            "systemStartText"
+    },
+
+
+    {
+        start: 0.18,
+        end: 0.42,
+
+        statusKey:
+            "releasing",
+
+        kickerKey:
+            "gradual",
+
+        titleKey:
+            "gradual",
+
+        textKey:
+            "gradualText"
+    },
+
+
+    {
+        start: 0.42,
+        end: 0.66,
+
+        statusKey:
+            "sustained",
+
+        kickerKey:
+            "sustained",
+
+        titleKey:
+            "sustainedTitle",
+
+        textKey:
+            "sustainedText"
+    },
+
+
+    {
+        start: 0.66,
+        end: 0.88,
+
+        statusKey:
+            "continuing",
+
+        kickerKey:
+            "extendedTitle",
+
+        titleKey:
+            "extendedTitle",
+
+        textKey:
+            "extendedText"
+    },
+
+
+    {
+        start: 0.88,
+        end: 1.00,
+
+        statusKey:
+            "complete",
+
+        kickerKey:
+            "completeTitle",
+
+        titleKey:
+            "completeTitle",
+
+        textKey:
+            "completeText"
+    }
+
+];
+
+
+/* =========================================================
+   SIMULATION STATE
+========================================================= */
+
+let running = false;
+
+let paused = false;
+
+let animationFrame =
+    null;
+
+let startTime = 0;
+
+let pausedAt = 0;
+
+let lastParticleCount = 0;
+
+let currentStage = -1;
+
+
+/* =========================================================
+   DYNAMIC TEXT
+========================================================= */
+
+function updateDynamicText() {
+
+    if (
+        running ||
+        paused
+    ) {
+
+        const p =
+            running
+                ? Math.min(
+                    (
+                        performance.now()
+                        - startTime
+                    ) / duration,
+
+                    1
+                )
+
+                : pausedAt;
+
+
+        updateStage(p);
+
+        return;
+
+    }
+
+
+    status.textContent =
+        translate("ready");
+
+    eventKicker.textContent =
+        translate("waiting");
+
+    eventTitle.textContent =
+        translate("eventWaitingTitle");
+
+    eventText.textContent =
+        translate("eventWaitingText");
+
+}
+
+
+/* =========================================================
+   STAGES
+========================================================= */
+
+function getStage(progressValue) {
+
+    return simulationStages.findIndex(
+        stage =>
+            progressValue >= stage.start &&
+            progressValue < stage.end
+    );
+
+}
+
+
+function updateStage(progressValue) {
+
+    let stageIndex =
+        getStage(
+            progressValue
+        );
+
+
+    if (
+        progressValue >= 0.9999
+    ) {
+
+        stageIndex =
+            4;
+
+    }
+
+
+    if (
+        stageIndex === -1
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        stageIndex !== currentStage
+    ) {
+
+        currentStage =
+            stageIndex;
+
+
+        const stage =
+            simulationStages[
+                stageIndex
+            ];
+
+
+        status.textContent =
+            translate(
+                stage.statusKey
+            );
+
+
+        eventKicker.textContent =
+            translate(
+                stage.kickerKey
+            );
+
+
+        eventTitle.textContent =
+            translate(
+                stage.titleKey
+            );
+
+
+        eventText.textContent =
+            translate(
+                stage.textKey
+            );
+
+
+        stageElements.forEach(
+            (
+                element,
+                index
+            ) => {
+
+                element.classList.toggle(
+                    "active",
+
+                    index <=
+                    stageIndex
+                );
+
+            }
+        );
+
+
+        /*
+           Animate the new heading slightly
+           when the stage changes.
+        */
+
+        eventTitle.animate(
+            [
+
+                {
+                    opacity: .3,
+
+                    transform:
+                        "translateY(5px)"
+                },
+
+                {
+                    opacity: 1,
+
+                    transform:
+                        "translateY(0)"
+                }
+
+            ],
+
+            {
+                duration: 500,
+
+                easing:
+                    "ease-out"
+            }
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   EASING
+========================================================= */
+
+function easeOutCubic(t) {
+
+    return 1 -
+        Math.pow(
+            1 - t,
+            3
+        );
+
+}
+
+
+/* =========================================================
+   PARTICLE RENDERING
+========================================================= */
+
+function renderParticles(
+    progressValue
+) {
+
+    const width =
+        scene.clientWidth;
+
+    const height =
+        scene.clientHeight;
+
+
+    let releasedCount =
+        0;
+
+
+    drugs.forEach(
+        (
+            drug,
+            index
+        ) => {
+
+            const releaseStart =
+                releaseSchedule[
+                    index
+                ];
+
+
+            const travelDuration =
+                0.17;
+
+
+            const local =
+                (
+                    progressValue
+                    -
+                    releaseStart
+                )
+                /
+                travelDuration;
+
+
+            if (
+                progressValue <
+                releaseStart
+            ) {
+
+                drug.style.opacity =
+                    "0";
+
+
+                drug.style.transform =
+                    "translate3d(0,0,0) scale(.4)";
+
+
+                return;
+
+            }
+
+
+            releasedCount++;
+
+
+            const [
+                xFactor,
+                yFactor
+            ] =
+                particleEndpoints[
+                    index
+                ];
+
+
+            const targetX =
+                xFactor * width;
+
+            const targetY =
+                yFactor * height;
+
+
+            if (
+                local < 1
+            ) {
+
+                const eased =
+                    easeOutCubic(
+                        Math.max(
+                            0,
+
+                            Math.min(
+                                local,
+                                1
+                            )
+                        )
+                    );
+
+
+                const x =
+                    targetX * eased;
+
+                const y =
+                    targetY * eased;
+
+
+                const opacity =
+                    Math.min(
+                        local * 4,
+                        1
+                    );
+
+
+                const scale =
+                    .55
+                    +
+                    Math.min(
+                        local,
+                        1
+                    ) * .45;
+
+
+                drug.style.opacity =
+                    opacity.toString();
+
+
+                drug.style.transform =
+                    `
+                    translate3d(
+                        ${x}px,
+                        ${y}px,
+                        0
+                    )
+                    scale(${scale})
+                    `;
+
+            }
+
+
+            else {
+
+                const idleTime =
+                    progressValue
+                    -
+                    (
+                        releaseStart
+                        +
+                        travelDuration
+                    );
+
+
+                const driftX =
+                    Math.sin(
+                        idleTime * 20
+                        +
+                        index
+                    )
+                    *
+                    5;
+
+
+                const driftY =
+                    Math.cos(
+                        idleTime * 17
+                        +
+                        index * .8
+                    )
+                    *
+                    5;
+
+
+                drug.style.opacity =
+                    ".42";
+
+
+                drug.style.transform =
+                    `
+                    translate3d(
+                        ${
+                            targetX
+                            +
+                            driftX
+                        }px,
+
+                        ${
+                            targetY
+                            +
+                            driftY
+                        }px,
+
+                        0
+                    )
+                    scale(.9)
+                    `;
+
+            }
+
+        }
+    );
+
+
+    dose.textContent =
+        releasedCount;
+
+
+    if (
+        releasedCount >
+        lastParticleCount
+        &&
+        running
+    ) {
+
+        triggerDepotPulse();
+
+    }
+
+
+    lastParticleCount =
+        releasedCount;
+
+}
+
+
+/* =========================================================
+   DEPOT PULSE
+========================================================= */
+
+function triggerDepotPulse() {
+
+    scene.classList.remove(
+        "release-pulse"
+    );
+
+
+    void scene.offsetWidth;
+
+
+    scene.classList.add(
+        "release-pulse"
+    );
+
+}
+
+
+/* =========================================================
+   SIMULATION LOOP
+========================================================= */
+
+function updateSimulation(
+    timestamp
+) {
+
+    if (!running) {
+
+        return;
+
+    }
+
+
+    const elapsed =
+        timestamp -
+        startTime;
+
+
+    const percentage =
+        Math.min(
+            elapsed / duration,
+            1
+        );
+
+
+    progress.style.width =
+        `${percentage * 100}%`;
+
+
+    percent.textContent =
+        `${Math.round(
+            percentage * 100
+        )}%`;
+
+
+    /*
+       Simulate an 8-hour period.
+    */
+
+    const simulatedHours =
+        percentage * 8;
+
+
+    hours.textContent =
+        simulatedHours.toFixed(1);
+
+
+    updateStage(
+        percentage
+    );
+
+
+    renderParticles(
+        percentage
+    );
+
+
+    if (
+        percentage >= 1
+    ) {
+
+        finishSimulation();
+
+        return;
+
+    }
+
+
+    animationFrame =
+        requestAnimationFrame(
+            updateSimulation
+        );
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+function startSimulation() {
+
+    /*
+       Resume from pause.
+    */
+
+    if (paused) {
+
+        paused =
+            false;
+
+        running =
+            true;
+
+
+        simInfo.classList.remove(
+            "paused"
+        );
+
+
+        startTime =
+            performance.now()
+            -
+            (
+                pausedAt
+                *
+                duration
+            );
+
+
+        startButton.innerHTML =
+            `
+            Ⅱ
+
+            <span>
+                ${translate("pause")}
+            </span>
+            `;
+
+
+        animationFrame =
+            requestAnimationFrame(
+                updateSimulation
+            );
+
+
+        return;
+
+    }
+
+
+    /*
+       New simulation.
+    */
+
+    resetSimulationVisuals();
+
+
+    running =
+        true;
+
+    paused =
+        false;
+
+
+    startTime =
+        performance.now();
+
+
+    currentStage =
+        -1;
+
+    lastParticleCount =
+        0;
+
+
+    simInfo.classList.remove(
+        "paused"
+    );
+
+
+    startButton.innerHTML =
+        `
+        Ⅱ
+
+        <span>
+            ${translate("pause")}
+        </span>
+        `;
+
+
+    animationFrame =
+        requestAnimationFrame(
+            updateSimulation
+        );
+
+}
+
+
+/* =========================================================
+   PAUSE
+========================================================= */
+
+function pauseSimulation() {
+
+    if (!running) {
+
+        return;
+
+    }
+
+
+    paused =
+        true;
+
+    running =
+        false;
+
+
+    pausedAt =
+        Math.min(
+            (
+                performance.now()
+                -
+                startTime
+            ) / duration,
+
+            1
+        );
+
+
+    if (
+        animationFrame !== null
+    ) {
+
+        cancelAnimationFrame(
+            animationFrame
+        );
+
+        animationFrame =
+            null;
+
+    }
+
+
+    simInfo.classList.add(
+        "paused"
+    );
+
+
+    status.textContent =
+        translate(
+            "paused"
+        );
+
+
+    startButton.innerHTML =
+        `
+        ▶
+
+        <span>
+            ${translate("resume")}
+        </span>
+        `;
+
+}
+
+
+/* =========================================================
+   FINISH
+========================================================= */
+
+function finishSimulation() {
+
+    running =
+        false;
+
+    paused =
+        false;
+
+
+    if (
+        animationFrame !== null
+    ) {
+
+        cancelAnimationFrame(
+            animationFrame
+        );
+
+        animationFrame =
+            null;
+
+    }
+
+
+    progress.style.width =
+        "100%";
+
+
+    percent.textContent =
+        "100%";
+
+
+    hours.textContent =
+        "8.0";
+
+
+    dose.textContent =
+        "8";
+
+
+    status.textContent =
+        translate(
+            "complete"
+        );
+
+
+    eventKicker.textContent =
+        translate(
+            "completeTitle"
+        );
+
+
+    eventTitle.textContent =
+        translate(
+            "completeTitle"
+        );
+
+
+    eventText.textContent =
+        translate(
+            "completeText"
+        );
+
+
+    stageElements.forEach(
+        element =>
+            element.classList.add(
+                "active"
+            )
+    );
+
+
+    startButton.innerHTML =
+        `
+        ↻
+
+        <span>
+            ${translate("rerun")}
+        </span>
+        `;
+
+}
+
+
+/* =========================================================
+   RESET VISUALS
+========================================================= */
+
+function resetSimulationVisuals() {
+
+    running =
+        false;
+
+    paused =
+        false;
+
+
+    if (
+        animationFrame !== null
+    ) {
+
+        cancelAnimationFrame(
+            animationFrame
+        );
+
+        animationFrame =
+            null;
+
+    }
+
+
+    progress.style.width =
+        "0%";
+
+
+    percent.textContent =
+        "0%";
+
+
+    hours.textContent =
+        "0.0";
+
+
+    dose.textContent =
+        "0";
+
+
+    lastParticleCount =
+        0;
+
+
+    currentStage =
+        -1;
+
+
+    pausedAt =
+        0;
+
+
+    simInfo.classList.remove(
+        "paused"
+    );
+
+
+    drugs.forEach(
+        drug => {
+
+            drug.style.opacity =
+                "0";
+
+
+            drug.style.transform =
+                "translate3d(0,0,0) scale(.4)";
+
+        }
+    );
+
+
+    stageElements.forEach(
+        element =>
+            element.classList.remove(
+                "active"
+            )
+    );
+
+
+    status.textContent =
+        translate(
+            "ready"
+        );
+
+
+    eventKicker.textContent =
+        translate(
+            "waiting"
+        );
+
+
+    eventTitle.textContent =
+        translate(
+            "eventWaitingTitle"
+        );
+
+
+    eventText.textContent =
+        translate(
+            "eventWaitingText"
+        );
+
+
+    startButton.innerHTML =
+        `
+        ▶
+
+        <span>
+            ${translate("start")}
+        </span>
+        `;
+
+}
+
+
+function resetSimulation() {
+
+    resetSimulationVisuals();
+
+}
+
+
+/* =========================================================
+   STOP SIMULATION
+========================================================= */
+
+function stopSimulation() {
+
+    running =
+        false;
+
+    paused =
+        false;
+
+
+    if (
+        animationFrame !== null
+    ) {
+
+        cancelAnimationFrame(
+            animationFrame
+        );
+
+        animationFrame =
+            null;
+
+    }
+
+
+    scene.classList.remove(
+        "release-pulse"
+    );
+
+}
+
+
+/* =========================================================
+   BUTTON EVENTS
+========================================================= */
+
+startButton.addEventListener(
+    "click",
+    () => {
+
+        if (running) {
+
+            pauseSimulation();
+
+        }
+        else {
+
+            startSimulation();
+
+        }
+
+    }
+);
+
+
+resetButton.addEventListener(
+    "click",
+    () => {
+
+        resetSimulation();
+
+    }
+);
+
+
+/* =========================================================
+   INITIAL STATE
+========================================================= */
+
+languageModal.classList.remove(
+    "hidden"
+);
+
+app.classList.remove(
+    "ready"
+);
+
+
+graphContainers.forEach(
+    graph =>
+        graph.classList.remove(
+            "playing"
+        )
+);
+
+</script>
+
+</body>
+</html>
 
