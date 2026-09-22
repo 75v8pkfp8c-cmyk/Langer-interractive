@@ -3,432 +3,602 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Robert Langer — Drug Delivery</title>
-
+<title>Robert Langer — Controlled Drug Delivery</title>
 <style>
 * {
     box-sizing: border-box;
-}
-
-body {
     margin: 0;
-    min-height: 100vh;
+    padding: 0;
+}
+body {
     font-family: Arial, Helvetica, sans-serif;
     background:
-        radial-gradient(circle at 50% 20%, #18264a 0%, #090d18 45%, #05070d 100%);
+        radial-gradient(circle at 50% 20%, #12365a 0%, #07111f 45%, #02060c 100%);
     color: white;
+    min-height: 100vh;
     overflow-x: hidden;
 }
-
+.page {
+    min-height: 100vh;
+    display: none;
+    padding: 35px 20px 50px;
+}
+.page.active {
+    display: block;
+}
 .container {
-    max-width: 900px;
+    width: min(1100px, 100%);
     margin: auto;
-    padding: 28px 20px 50px;
-    text-align: center;
 }
-
-.badge {
-    display: inline-block;
-    padding: 7px 13px;
-    border: 1px solid rgba(255,255,255,.25);
-    border-radius: 30px;
-    font-size: 12px;
-    letter-spacing: 2px;
-    color: #b9c7e8;
-    margin-bottom: 15px;
-}
-
 h1 {
-    font-size: clamp(34px, 9vw, 70px);
-    margin: 0;
-    letter-spacing: -2px;
+    font-size: clamp(32px, 6vw, 64px);
+    text-align: center;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
 }
-
 .subtitle {
-    color: #9eafd3;
-    font-size: 16px;
-    margin-top: 10px;
+    text-align: center;
+    color: #9bb8d4;
+    font-size: 17px;
+    margin-bottom: 35px;
 }
-
-.card {
+.highlight {
+    color: #ff9d32;
+}
+/* ---------------- PAGE 1 ---------------- */
+.compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
     margin-top: 30px;
-    padding: 25px 18px;
-    border-radius: 25px;
-    background: rgba(255,255,255,.055);
-    border: 1px solid rgba(255,255,255,.11);
-    box-shadow: 0 20px 70px rgba(0,0,0,.35);
-    backdrop-filter: blur(12px);
 }
-
-h2 {
-    margin: 0 0 5px;
+.card {
+    background: rgba(255,255,255,0.055);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 25px;
+    padding: 28px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.card h2 {
+    text-align: center;
+    margin-bottom: 8px;
     font-size: 25px;
 }
-
-.description {
-    color: #aab6ce;
+.card p {
+    text-align: center;
+    color: #a9bfd3;
+    line-height: 1.5;
     margin-bottom: 25px;
 }
-
-.scene {
-    height: 330px;
-    position: relative;
-    overflow: hidden;
-    border-radius: 20px;
-    background:
-        radial-gradient(circle at center, rgba(55,100,180,.18), transparent 55%);
+.traditional h2 {
+    color: #ff6b5e;
 }
-
-/* Polymer sphere */
-
-.sphere {
-    position: absolute;
-    width: 170px;
-    height: 170px;
-    border-radius: 50%;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background:
-        radial-gradient(circle at 32% 25%, #ffd98a 0%, #ffad32 18%, #d96d0d 52%, #783300 100%);
-    box-shadow:
-        0 0 35px rgba(255,150,40,.35),
-        inset -20px -25px 35px rgba(80,20,0,.35),
-        inset 15px 15px 25px rgba(255,255,255,.2);
-    transition: .5s;
+.controlled h2 {
+    color: #54d6ff;
 }
-
-.sphere::before {
-    content: "";
-    position: absolute;
-    inset: 15px;
-    border-radius: 50%;
-    border: 2px dashed rgba(255,255,255,.22);
-}
-
-.sphere-label {
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 12px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    text-shadow: 0 2px 5px #000;
-}
-
-/* Drug particles */
-
-.drug {
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background: #fff;
-    box-shadow: 0 0 13px #9fd4ff, 0 0 25px rgba(100,190,255,.5);
-    left: 50%;
-    top: 50%;
-    opacity: 1;
-    transition: transform 1.8s ease-out, opacity 1.8s ease-out;
-}
-
-/* different starting positions */
-
-.d1 { transform: translate(-35px,-35px); }
-.d2 { transform: translate(25px,-40px); }
-.d3 { transform: translate(-45px,5px); }
-.d4 { transform: translate(20px,15px); }
-.d5 { transform: translate(-5px,45px); }
-.d6 { transform: translate(45px,0px); }
-
-.released .d1 { transform: translate(-210px,-95px); opacity: 0; }
-.released .d2 { transform: translate(220px,-120px); opacity: 0; }
-.released .d3 { transform: translate(-230px,30px); opacity: 0; }
-.released .d4 { transform: translate(230px,70px); opacity: 0; }
-.released .d5 { transform: translate(-120px,145px); opacity: 0; }
-.released .d6 { transform: translate(130px,135px); opacity: 0; }
-
-/* Timeline */
-
-.time {
-    margin-top: 25px;
-    color: #9eafd3;
-    font-size: 13px;
-    letter-spacing: 1px;
-}
-
-.progress {
-    height: 6px;
-    border-radius: 10px;
-    background: rgba(255,255,255,.1);
-    margin: 10px 5px 20px;
-    overflow: hidden;
-}
-
-.progress-bar {
-    width: 0%;
-    height: 100%;
-    border-radius: 10px;
-    background: linear-gradient(90deg, #ffb13b, #8fd3ff);
-    transition: width .3s linear;
-}
-
-button {
-    border: 0;
-    padding: 15px 25px;
-    border-radius: 50px;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    background: white;
-    color: #101522;
-    box-shadow: 0 8px 30px rgba(255,255,255,.12);
-    transition: .2s;
-}
-
-button:hover {
-    transform: scale(1.04);
-}
-
-button:active {
-    transform: scale(.97);
-}
-
-button:disabled {
-    opacity: .5;
-}
-
-/* Graph */
-
 .graph {
-    margin-top: 30px;
-    text-align: left;
-}
-
-.graph-title {
-    font-size: 13px;
-    color: #9eafd3;
-    margin-bottom: 10px;
-    letter-spacing: 1px;
-}
-
-.graph-box {
+    height: 210px;
     position: relative;
-    height: 120px;
-    border-left: 2px solid rgba(255,255,255,.2);
-    border-bottom: 2px solid rgba(255,255,255,.2);
-    margin: 0 8px;
+    border-left: 2px solid #718096;
+    border-bottom: 2px solid #718096;
+    margin-top: 20px;
+    overflow: hidden;
 }
-
-.line {
+.graph::before {
+    content: "";
     position: absolute;
     left: 0;
-    bottom: 20px;
-    width: 0%;
-    height: 4px;
-    border-radius: 5px;
-    background: #8fd3ff;
-    transform: rotate(-5deg);
-    transform-origin: left center;
-    transition: width 5s linear;
+    right: 0;
+    top: 50%;
+    border-top: 1px dashed rgba(255,255,255,0.12);
 }
-
-.line::after {
-    content: "";
-    position: absolute;
-    right: -2px;
-    top: -4px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #8fd3ff;
-    box-shadow: 0 0 15px #8fd3ff;
-}
-
-.graph.active .line {
-    width: 92%;
-}
-
 .graph-label {
-    display: flex;
-    justify-content: space-between;
-    color: #6f7d99;
-    font-size: 10px;
-    margin-top: 7px;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    color: #718096;
+    font-size: 11px;
 }
-
-.fact {
+svg {
+    width: 100%;
+    height: 100%;
+}
+.trad-line {
+    fill: none;
+    stroke: #ff675b;
+    stroke-width: 4;
+    filter: drop-shadow(0 0 7px rgba(255,80,70,0.7));
+}
+.control-line {
+    fill: none;
+    stroke: #50d9ff;
+    stroke-width: 4;
+    filter: drop-shadow(0 0 7px rgba(40,210,255,0.7));
+}
+.legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 15px;
+    font-size: 13px;
+    color: #a9bfd3;
+}
+.dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+.red {
+    background: #ff675b;
+}
+.blue {
+    background: #50d9ff;
+}
+.explanation {
     margin-top: 30px;
-    padding: 20px;
-    border-radius: 18px;
-    background: rgba(255,255,255,.045);
-    color: #c7d1e4;
+    background: rgba(255,255,255,0.045);
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+}
+.explanation h3 {
+    margin-bottom: 10px;
+    color: #ff9d32;
+}
+.explanation p {
+    color: #b5c8da;
     line-height: 1.6;
 }
-
-.fact strong {
+.next-button {
+    display: block;
+    margin: 30px auto 0;
+    padding: 16px 30px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ff9d32, #ff5c36);
     color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 30px rgba(255,130,40,0.25);
+    transition: 0.25s;
 }
-
-.footer {
+.next-button:hover {
+    transform: translateY(-3px) scale(1.02);
+}
+/* ---------------- PAGE 2 ---------------- */
+.simulator {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 30px;
+    align-items: center;
+}
+.microscope {
+    min-height: 420px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.sphere {
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    position: relative;
+    background:
+        radial-gradient(circle at 30% 25%,
+        #ffe0a8 0%,
+        #ffae48 18%,
+        #d8661e 48%,
+        #6f250d 80%,
+        #321006 100%);
+    box-shadow:
+        0 0 25px rgba(255,150,45,0.8),
+        0 0 70px rgba(255,110,25,0.3),
+        inset -25px -25px 50px rgba(0,0,0,0.4);
+    animation: breathe 2.8s infinite ease-in-out;
+}
+@keyframes breathe {
+    0%,100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.035);
+    }
+}
+.sphere::before {
+    content: "CONTROLLED";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgba(255,255,255,0.65);
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+.particle {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #72e7ff;
+    box-shadow: 0 0 12px #42dcff;
+    opacity: 0;
+}
+.p1 { left: 50%; top: 50%; }
+.p2 { left: 48%; top: 48%; }
+.p3 { left: 52%; top: 51%; }
+.p4 { left: 49%; top: 53%; }
+.p5 { left: 51%; top: 47%; }
+.p6 { left: 47%; top: 51%; }
+.p7 { left: 53%; top: 49%; }
+.p8 { left: 50%; top: 52%; }
+.release .p1 { animation: release1 8s linear infinite; }
+.release .p2 { animation: release2 8s linear infinite; }
+.release .p3 { animation: release3 8s linear infinite; }
+.release .p4 { animation: release4 8s linear infinite; }
+.release .p5 { animation: release5 8s linear infinite; }
+.release .p6 { animation: release6 8s linear infinite; }
+.release .p7 { animation: release7 8s linear infinite; }
+.release .p8 { animation: release8 8s linear infinite; }
+@keyframes release1 {
+    0%,10% { opacity:0; transform:translate(0,0); }
+    18% { opacity:1; }
+    100% { opacity:0; transform:translate(145px,-65px); }
+}
+@keyframes release2 {
+    0%,20% { opacity:0; transform:translate(0,0); }
+    28% { opacity:1; }
+    100% { opacity:0; transform:translate(-155px,-30px); }
+}
+@keyframes release3 {
+    0%,30% { opacity:0; transform:translate(0,0); }
+    38% { opacity:1; }
+    100% { opacity:0; transform:translate(125px,90px); }
+}
+@keyframes release4 {
+    0%,40% { opacity:0; transform:translate(0,0); }
+    48% { opacity:1; }
+    100% { opacity:0; transform:translate(-120px,105px); }
+}
+@keyframes release5 {
+    0%,50% { opacity:0; transform:translate(0,0); }
+    58% { opacity:1; }
+    100% { opacity:0; transform:translate(165px,25px); }
+}
+@keyframes release6 {
+    0%,60% { opacity:0; transform:translate(0,0); }
+    68% { opacity:1; }
+    100% { opacity:0; transform:translate(-165px,45px); }
+}
+@keyframes release7 {
+    0%,70% { opacity:0; transform:translate(0,0); }
+    78% { opacity:1; }
+    100% { opacity:0; transform:translate(40px,-125px); }
+}
+@keyframes release8 {
+    0%,80% { opacity:0; transform:translate(0,0); }
+    88% { opacity:1; }
+    100% { opacity:0; transform:translate(-40px,140px); }
+}
+.sim-info {
+    background: rgba(255,255,255,0.05);
+    border-radius: 25px;
+    padding: 30px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.sim-info h2 {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+.sim-info .small {
+    color: #8fa9bf;
+    margin-bottom: 25px;
+}
+.status {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 18px;
+    color: #54d6ff;
+}
+.timer {
+    font-size: 44px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+.progress-bg {
+    width: 100%;
+    height: 12px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.1);
+    overflow: hidden;
+}
+.progress {
+    width: 0%;
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(90deg, #54d6ff, #ff9d32);
+    transition: width 0.15s linear;
+}
+.dose-count {
+    margin-top: 20px;
+    color: #a9bfd3;
+}
+.dose-number {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+.month-box {
     margin-top: 25px;
-    color: #59657c;
-    font-size: 11px;
-    letter-spacing: 1px;
+    padding: 18px;
+    border-radius: 15px;
+    background: rgba(80,215,255,0.08);
+    border: 1px solid rgba(80,215,255,0.18);
+}
+.month-box strong {
+    color: #54d6ff;
+}
+button#start {
+    width: 100%;
+    margin-top: 25px;
+    padding: 17px;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #0fa9d7, #2865ff);
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.25s;
+}
+button#start:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 35px rgba(40,150,255,0.25);
+}
+.back {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.18);
+    color: #a9bfd3;
+    padding: 10px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+/* ---------------- RESPONSIVE ---------------- */
+@media(max-width: 800px) {
+    .compare,
+    .simulator {
+        grid-template-columns: 1fr;
+    }
+    .card {
+        padding: 22px;
+    }
+    .sphere {
+        width: 190px;
+        height: 190px;
+    }
+    .microscope {
+        min-height: 330px;
+    }
 }
 </style>
 </head>
-
 <body>
-
+<!-- ================= PAGE 1 ================= -->
+<section id="page1" class="page active">
 <div class="container">
-
-    <div class="badge">INTERACTIVE SCIENCE</div>
-
-    <h1>ROBERT LANGER</h1>
-
-    <div class="subtitle">
-        Exploring Controlled Drug Delivery
-    </div>
-
-    <div class="card">
-
-        <h2>🧪 Drug Delivery Simulator</h2>
-
-        <div class="description">
-            What happens when a drug is released gradually instead of all at once?
-        </div>
-
-        <div class="scene" id="scene">
-
-            <div class="sphere">
-                <div class="sphere-label">
-                    POLYMER<br>
-                    MICROSPHERE
-                </div>
-            </div>
-
-            <div class="drug d1"></div>
-            <div class="drug d2"></div>
-            <div class="drug d3"></div>
-            <div class="drug d4"></div>
-            <div class="drug d5"></div>
-            <div class="drug d6"></div>
-
-        </div>
-
-        <div class="time">
-            RELEASE TIME: <strong id="timer">0 h</strong>
-        </div>
-
-        <div class="progress">
-            <div class="progress-bar" id="progress"></div>
-        </div>
-
-        <button id="startButton" onclick="startSimulation()">
-            ▶ START SIMULATION
-        </button>
-
-        <div class="graph" id="graph">
-
-            <div class="graph-title">
-                DRUG RELEASE OVER TIME
-            </div>
-
-            <div class="graph-box">
-                <div class="line"></div>
-            </div>
-
-            <div class="graph-label">
-                <span>0 h</span>
-                <span>2 h</span>
-                <span>4 h</span>
-                <span>6 h</span>
-                <span>8 h</span>
-            </div>
-
-        </div>
-
-        <div class="fact">
-
-            <strong>Why is controlled release important?</strong>
-
-            <br><br>
-
-            Drug-delivery systems can be designed to release therapeutic
-            substances gradually over time, helping control how and when
-            a drug reaches its target.
-
-        </div>
-
-    </div>
-
-    <div class="footer">
-        ROBERT LANGER • BIOMEDICAL ENGINEERING • DRUG DELIVERY
-    </div>
-
+<h1>ROBERT <span class="highlight">LANGER</span></h1>
+<div class="subtitle">
+Exploring the idea behind controlled drug delivery
 </div>
-
+<div class="compare">
+<!-- TRADITIONAL -->
+<div class="card traditional">
+<h2>Traditional dosing</h2>
+<p>
+A dose is taken → drug concentration rises → concentration falls → another dose is needed.
+</p>
+<div class="graph">
+<div class="graph-label">Drug concentration</div>
+<svg viewBox="0 0 500 200" preserveAspectRatio="none">
+<polyline
+class="trad-line"
+points="
+0,170
+20,170
+35,35
+50,170
+85,170
+100,35
+115,170
+150,170
+165,35
+180,170
+215,170
+230,35
+245,170
+280,170
+295,35
+310,170
+345,170
+360,35
+375,170
+410,170
+425,35
+440,170
+500,170
+"/>
+</svg>
+</div>
+<div class="legend">
+<span><span class="dot red"></span>Repeated peaks</span>
+</div>
+</div>
+<!-- CONTROLLED -->
+<div class="card controlled">
+<h2>Controlled release</h2>
+<p>
+A polymer-based system can release the active substance gradually, helping maintain a more continuous delivery profile.
+</p>
+<div class="graph">
+<div class="graph-label">Drug concentration</div>
+<svg viewBox="0 0 500 200" preserveAspectRatio="none">
+<path
+class="control-line"
+d="
+M 0 170
+C 70 155, 100 115, 150 105
+C 210 93, 270 96, 330 95
+C 390 94, 450 97, 500 96
+"/>
+</svg>
+</div>
+<div class="legend">
+<span><span class="dot blue"></span>More continuous release</span>
+</div>
+</div>
+</div>
+<div class="explanation">
+<h3>Why does controlled release matter?</h3>
+<p>
+Instead of delivering a large amount of drug all at once,
+a delivery system can be designed to release an active substance
+gradually over an extended period.
+</p>
+<br>
+<p>
+Robert Langer's research helped establish important approaches
+to using polymers and other materials to control how substances
+are released inside the body.
+</p>
+</div>
+<button class="next-button" onclick="showPage(2)">
+SEE THE DRUG DELIVERY SYSTEM →
+</button>
+</div>
+</section>
+<!-- ================= PAGE 2 ================= -->
+<section id="page2" class="page">
+<div class="container">
+<button class="back" onclick="showPage(1)">
+← Back
+</button>
+<h1>CONTROLLED <span class="highlight">RELEASE</span></h1>
+<div class="subtitle">
+Watch the delivery system release doses gradually
+</div>
+<div class="simulator">
+<div class="microscope">
+<div class="sphere" id="sphere">
+<div class="particle p1"></div>
+<div class="particle p2"></div>
+<div class="particle p3"></div>
+<div class="particle p4"></div>
+<div class="particle p5"></div>
+<div class="particle p6"></div>
+<div class="particle p7"></div>
+<div class="particle p8"></div>
+</div>
+</div>
+<div class="sim-info">
+<h2>Drug Delivery Simulator</h2>
+<div class="small">
+Illustrative controlled-release model
+</div>
+<div class="status" id="status">
+SYSTEM READY
+</div>
+<div class="timer">
+<span id="hours">0</span> h
+</div>
+<div class="progress-bg">
+<div class="progress" id="progress"></div>
+</div>
+<div class="dose-count">
+Released particles:
+<br>
+<span class="dose-number" id="dose">0</span>
+</div>
+<div class="month-box">
+<strong>LONG-ACTING DELIVERY</strong>
+<p style="margin-top:8px;color:#a9bfd3;line-height:1.5;">
+The principle can be extended from repeated short-interval
+doses to depot systems designed to release an active substance
+over much longer periods.
+</p>
+</div>
+<button id="start" onclick="startSimulation()">
+▶ START SIMULATION
+</button>
+</div>
+</div>
+</div>
+</section>
 <script>
-
-let running = false;
-
-function startSimulation() {
-
-    if (running) return;
-
-    running = true;
-
-    const button = document.getElementById("startButton");
-    const scene = document.getElementById("scene");
-    const progress = document.getElementById("progress");
-    const timer = document.getElementById("timer");
-    const graph = document.getElementById("graph");
-
-    button.disabled = true;
-    button.innerText = "SIMULATION RUNNING...";
-
-    scene.classList.add("released");
-    graph.classList.add("active");
-
-    let start = Date.now();
-    let duration = 8000;
-
-    let animation = setInterval(() => {
-
-        let elapsed = Date.now() - start;
-        let percent = Math.min(elapsed / duration, 1);
-
-        progress.style.width = (percent * 100) + "%";
-
-        let hours = Math.floor(percent * 8);
-
-        timer.innerText = hours + " h";
-
-        if (percent >= 1) {
-
-            clearInterval(animation);
-
-            timer.innerText = "8 h";
-            button.disabled = false;
-            button.innerText = "↻ RUN AGAIN";
-
-            running = false;
-
-            setTimeout(() => {
-                scene.classList.remove("released");
-                graph.classList.remove("active");
-                progress.style.width = "0%";
-                timer.innerText = "0 h";
-            }, 3500);
-        }
-
-    }, 100);
-
+/* ---------------- PAGE SWITCHING ---------------- */
+function showPage(number) {
+    document.getElementById("page1").classList.remove("active");
+    document.getElementById("page2").classList.remove("active");
+    document.getElementById("page" + number).classList.add("active");
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 }
-
+/* ---------------- SIMULATION ---------------- */
+let running = false;
+function startSimulation() {
+    if (running) return;
+    running = true;
+    const sphere = document.getElementById("sphere");
+    const progress = document.getElementById("progress");
+    const hours = document.getElementById("hours");
+    const dose = document.getElementById("dose");
+    const status = document.getElementById("status");
+    const button = document.getElementById("start");
+    sphere.classList.add("release");
+    button.innerText = "SIMULATION RUNNING...";
+    button.style.opacity = "0.6";
+    status.innerText = "RELEASING ACTIVE SUBSTANCE...";
+    let startTime = Date.now();
+    const duration = 8000;
+    const interval = setInterval(() => {
+        let elapsed = Date.now() - startTime;
+        let percentage = Math.min(
+            elapsed / duration * 100,
+            100
+        );
+        progress.style.width = percentage + "%";
+        let simulatedHours =
+            Math.min(
+                8,
+                Math.floor((percentage / 100) * 8)
+            );
+        hours.innerText = simulatedHours;
+        let particles =
+            Math.min(
+                8,
+                Math.floor((percentage / 100) * 8)
+            );
+        dose.innerText = particles;
+        if (percentage >= 100) {
+            clearInterval(interval);
+            hours.innerText = "8";
+            dose.innerText = "8";
+            status.innerText = "CONTROLLED RELEASE COMPLETE";
+            button.innerText = "↻ RUN AGAIN";
+            button.style.opacity = "1";
+            running = false;
+            sphere.classList.remove("release");
+        }
+    }, 80);
+}
 </script>
-
 </body>
 </html>
