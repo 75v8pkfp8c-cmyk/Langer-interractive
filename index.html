@@ -1,14 +1,16 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Robert Langer — Controlled Drug Delivery</title>
 
 <style>
+
 /* =========================================================
-   RESET / FOUNDATION
+   RESET
 ========================================================= */
 
 * {
@@ -27,18 +29,12 @@
     --muted-2: #71879b;
 
     --cyan: #55dcff;
-    --cyan-2: #209ed8;
     --blue: #416dff;
 
     --orange: #ffb454;
     --red: #ff685e;
 
-    --glass: rgba(255,255,255,0.055);
-    --glass-strong: rgba(255,255,255,0.085);
     --border: rgba(255,255,255,0.12);
-
-    --shadow:
-        0 25px 80px rgba(0,0,0,.38);
 
     --radius-lg: 28px;
     --radius-md: 20px;
@@ -50,6 +46,8 @@ html {
 }
 
 body {
+    min-height: 100vh;
+
     font-family:
         Inter,
         ui-sans-serif,
@@ -59,7 +57,6 @@ body {
         "Segoe UI",
         sans-serif;
 
-    min-height: 100vh;
     color: var(--text);
 
     background:
@@ -85,8 +82,10 @@ body {
 
 body::before {
     content: "";
+
     position: fixed;
     inset: 0;
+
     pointer-events: none;
 
     background-image:
@@ -96,13 +95,8 @@ body::before {
         );
 
     background-size: 32px 32px;
+
     opacity: .08;
-    mask-image:
-        linear-gradient(
-            to bottom,
-            black,
-            transparent 75%
-        );
 
     z-index: -1;
 }
@@ -116,6 +110,7 @@ button:focus-visible {
     outline-offset: 4px;
 }
 
+
 /* =========================================================
    LANGUAGE MODAL
 ========================================================= */
@@ -123,6 +118,7 @@ button:focus-visible {
 .language-modal {
     position: fixed;
     inset: 0;
+
     z-index: 9999;
 
     display: flex;
@@ -156,7 +152,10 @@ button:focus-visible {
 
     padding: 42px;
 
-    border: 1px solid rgba(255,255,255,.14);
+    border:
+        1px solid
+        rgba(255,255,255,.14);
+
     border-radius: 30px;
 
     background:
@@ -173,18 +172,24 @@ button:focus-visible {
     text-align: center;
 
     animation:
-        modalIn .7s cubic-bezier(.2,.8,.2,1);
+        modalIn
+        .7s
+        cubic-bezier(.2,.8,.2,1);
 }
 
 @keyframes modalIn {
     from {
         opacity: 0;
-        transform: translateY(25px) scale(.96);
+        transform:
+            translateY(25px)
+            scale(.96);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform:
+            translateY(0)
+            scale(1);
     }
 }
 
@@ -206,7 +211,9 @@ button:focus-visible {
             rgba(65,109,255,.18)
         );
 
-    border: 1px solid rgba(85,220,255,.22);
+    border:
+        1px solid
+        rgba(85,220,255,.22);
 
     box-shadow:
         0 0 35px rgba(85,220,255,.12);
@@ -223,19 +230,30 @@ button:focus-visible {
 
 .language-box p {
     color: var(--muted);
+
     line-height: 1.6;
+
     margin-bottom: 28px;
 }
 
 .language-buttons {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+
+    grid-template-columns:
+        1fr
+        1fr;
+
     gap: 14px;
 }
 
 .language-button {
-    border: 1px solid rgba(255,255,255,.13);
-    background: rgba(255,255,255,.045);
+    border:
+        1px solid
+        rgba(255,255,255,.13);
+
+    background:
+        rgba(255,255,255,.045);
+
     color: white;
 
     padding: 17px 18px;
@@ -252,24 +270,33 @@ button:focus-visible {
 
 .language-button:hover {
     transform: translateY(-3px);
-    background: rgba(255,255,255,.09);
-    border-color: rgba(85,220,255,.35);
+
+    background:
+        rgba(255,255,255,.09);
+
+    border-color:
+        rgba(85,220,255,.35);
 }
 
 .language-button strong {
     display: block;
+
     font-size: 17px;
+
     margin-bottom: 4px;
 }
 
 .language-button span {
     display: block;
+
     font-size: 12px;
+
     color: var(--muted-2);
 }
 
+
 /* =========================================================
-   MAIN APP
+   APPLICATION
 ========================================================= */
 
 #app {
@@ -301,7 +328,9 @@ button:focus-visible {
     display: block;
 
     animation:
-        pageIn .65s cubic-bezier(.2,.8,.2,1);
+        pageIn
+        .65s
+        cubic-bezier(.2,.8,.2,1);
 }
 
 @keyframes pageIn {
@@ -318,49 +347,63 @@ button:focus-visible {
 
 .container {
     width: min(1180px, 100%);
+
     margin: 0 auto;
 }
 
+
 /* =========================================================
-   HEADER / TOP BAR
+   TOP BAR
 ========================================================= */
 
 .topbar {
     display: flex;
+
     align-items: center;
     justify-content: space-between;
 
     width: min(1180px, 100%);
 
-    margin: 0 auto 40px;
+    margin:
+        0
+        auto
+        40px;
 
     color: var(--muted);
 
     font-size: 12px;
+
     letter-spacing: 1.5px;
+
     text-transform: uppercase;
 }
 
 .brand {
     display: flex;
+
     align-items: center;
+
     gap: 11px;
 }
 
 .brand-dot {
     width: 8px;
     height: 8px;
+
     border-radius: 50%;
 
     background: var(--cyan);
 
     box-shadow:
-        0 0 15px rgba(85,220,255,.85);
+        0 0 15px
+        rgba(85,220,255,.85);
 }
 
 .language-switcher {
     display: flex;
+
     align-items: center;
+
     gap: 7px;
 
     padding: 6px;
@@ -371,37 +414,45 @@ button:focus-visible {
 
     border-radius: 999px;
 
-    background: rgba(255,255,255,.035);
+    background:
+        rgba(255,255,255,.035);
 }
 
 .lang-option {
     border: 0;
+
     background: transparent;
+
     color: var(--muted);
 
-    padding: 8px 12px;
+    padding:
+        8px
+        12px;
+
     border-radius: 999px;
 
     cursor: pointer;
 
     font-size: 11px;
+
     letter-spacing: 1px;
 
     transition: .2s ease;
 }
 
 .lang-option.active {
-    background: rgba(85,220,255,.13);
+    background:
+        rgba(85,220,255,.13);
+
     color: white;
 }
+
 
 /* =========================================================
    TYPOGRAPHY
 ========================================================= */
 
 .hero-title {
-    position: relative;
-
     text-align: center;
 
     font-size:
@@ -429,13 +480,17 @@ button:focus-visible {
     color: var(--cyan);
 
     text-shadow:
-        0 0 30px rgba(85,220,255,.28);
+        0 0 30px
+        rgba(85,220,255,.28);
 }
 
 .subtitle {
     width: min(800px, 100%);
 
-    margin: 0 auto 44px;
+    margin:
+        0
+        auto
+        44px;
 
     color: var(--muted);
 
@@ -451,8 +506,9 @@ button:focus-visible {
     text-align: center;
 }
 
+
 /* =========================================================
-   PAGE 1 — COMPARISON
+   PAGE 1 — CARDS
 ========================================================= */
 
 .compare {
@@ -486,10 +542,9 @@ button:focus-visible {
         );
 
     box-shadow:
-        var(--shadow);
+        0 25px 80px rgba(0,0,0,.38);
 
-    backdrop-filter:
-        blur(14px);
+    backdrop-filter: blur(14px);
 
     transition:
         transform .3s ease,
@@ -498,39 +553,12 @@ button:focus-visible {
 
 .card:hover {
     transform: translateY(-5px);
-    border-color: rgba(255,255,255,.2);
-}
 
-.card::before {
-    content: "";
-
-    position: absolute;
-
-    width: 220px;
-    height: 220px;
-
-    top: -110px;
-    right: -110px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(255,255,255,.06),
-            transparent 70%
-        );
-
-    pointer-events: none;
+    border-color:
+        rgba(255,255,255,.2);
 }
 
 .card-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-
-    gap: 12px;
-
     margin-bottom: 10px;
 }
 
@@ -538,12 +566,17 @@ button:focus-visible {
     color: var(--muted-2);
 
     font-size: 11px;
+
     letter-spacing: 2px;
+
     text-transform: uppercase;
+
+    margin-bottom: 5px;
 }
 
 .card h2 {
     font-size: 27px;
+
     line-height: 1.2;
 }
 
@@ -563,6 +596,7 @@ button:focus-visible {
     margin-bottom: 25px;
 }
 
+
 /* =========================================================
    GRAPH
 ========================================================= */
@@ -570,7 +604,10 @@ button:focus-visible {
 .graph-wrap {
     position: relative;
 
-    padding: 12px 10px 6px;
+    padding:
+        12px
+        10px
+        6px;
 
     border:
         1px solid
@@ -613,6 +650,10 @@ button:focus-visible {
         10% 100%;
 }
 
+/*
+   Subtle scanner effect.
+*/
+
 .graph::before {
     content: "";
 
@@ -624,7 +665,7 @@ button:focus-visible {
         linear-gradient(
             to right,
             transparent,
-            rgba(255,255,255,.02),
+            rgba(255,255,255,.025),
             transparent
         );
 
@@ -632,7 +673,7 @@ button:focus-visible {
         translateX(-100%);
 }
 
-.graphs.playing .graph::before {
+.graph.playing::before {
     animation:
         scanGraph
         4s
@@ -642,7 +683,8 @@ button:focus-visible {
 
 @keyframes scanGraph {
     to {
-        transform: translateX(100%);
+        transform:
+            translateX(100%);
     }
 }
 
@@ -670,6 +712,12 @@ button:focus-visible {
     overflow: visible;
 }
 
+/*
+   IMPORTANT:
+   pathLength="1" on the SVG paths means the complete
+   line has a normalized length of exactly 1.
+*/
+
 .graph-line {
     fill: none;
 
@@ -690,7 +738,8 @@ button:focus-visible {
 
     filter:
         drop-shadow(
-            0 0 7px rgba(255,83,76,.62)
+            0 0 7px
+            rgba(255,83,76,.62)
         );
 }
 
@@ -699,35 +748,50 @@ button:focus-visible {
 
     filter:
         drop-shadow(
-            0 0 8px rgba(55,213,255,.58)
+            0 0 8px
+            rgba(55,213,255,.58)
         );
 }
 
-.graphs.playing .graph-line {
+/*
+   FIXED SELECTOR:
+   JavaScript adds "playing" directly to .graph,
+   so this selector must be .graph.playing.
+*/
+
+.graph.playing .graph-line {
     animation:
         graphDraw
-        3.8s
+        4s
         cubic-bezier(.35,.75,.2,1)
         forwards;
 }
 
 @keyframes graphDraw {
-    0% {
+
+    from {
         stroke-dashoffset: 1;
     }
 
-    100% {
+    to {
         stroke-dashoffset: 0;
     }
 }
 
+
+/* =========================================================
+   GRAPH PEAKS
+========================================================= */
+
 .graph-peak {
     opacity: 0;
+
     transform-box: fill-box;
+
     transform-origin: center;
 }
 
-.graphs.playing .graph-peak {
+.graph.playing .graph-peak {
     animation:
         graphPeak
         1.6s
@@ -735,29 +799,58 @@ button:focus-visible {
         forwards;
 }
 
-.graphs.playing .peak-1 { animation-delay: .55s; }
-.graphs.playing .peak-2 { animation-delay: 1.05s; }
-.graphs.playing .peak-3 { animation-delay: 1.55s; }
-.graphs.playing .peak-4 { animation-delay: 2.05s; }
-.graphs.playing .peak-5 { animation-delay: 2.55s; }
-.graphs.playing .peak-6 { animation-delay: 3.05s; }
+.graph.playing .peak-1 {
+    animation-delay: .55s;
+}
+
+.graph.playing .peak-2 {
+    animation-delay: 1.05s;
+}
+
+.graph.playing .peak-3 {
+    animation-delay: 1.55s;
+}
+
+.graph.playing .peak-4 {
+    animation-delay: 2.05s;
+}
+
+.graph.playing .peak-5 {
+    animation-delay: 2.55s;
+}
+
+.graph.playing .peak-6 {
+    animation-delay: 3.05s;
+}
 
 @keyframes graphPeak {
+
     0% {
         opacity: 0;
-        transform: scale(.35);
+
+        transform:
+            scale(.35);
     }
 
     30% {
         opacity: 1;
-        transform: scale(1.5);
+
+        transform:
+            scale(1.5);
     }
 
     100% {
         opacity: 0;
-        transform: scale(.85);
+
+        transform:
+            scale(.85);
     }
 }
+
+
+/* =========================================================
+   GRAPH AXES
+========================================================= */
 
 .graph-axis {
     position: absolute;
@@ -769,11 +862,39 @@ button:focus-visible {
     font-size: 9px;
 }
 
-.a0 { left: 3px; }
-.a4 { left: 25%; transform: translateX(-50%); }
-.a8 { left: 50%; transform: translateX(-50%); }
-.a12 { left: 75%; transform: translateX(-50%); }
-.a16 { right: 3px; }
+.a0 {
+    left: 3px;
+}
+
+.a4 {
+    left: 25%;
+
+    transform:
+        translateX(-50%);
+}
+
+.a8 {
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+}
+
+.a12 {
+    left: 75%;
+
+    transform:
+        translateX(-50%);
+}
+
+.a16 {
+    right: 3px;
+}
+
+
+/* =========================================================
+   LEGEND
+========================================================= */
 
 .legend {
     display: flex;
@@ -789,7 +910,9 @@ button:focus-visible {
 
 .legend-item {
     display: inline-flex;
+
     align-items: center;
+
     gap: 7px;
 }
 
@@ -802,13 +925,20 @@ button:focus-visible {
 
 .red {
     background: var(--red);
-    box-shadow: 0 0 10px rgba(255,104,94,.55);
+
+    box-shadow:
+        0 0 10px
+        rgba(255,104,94,.55);
 }
 
 .blue {
     background: var(--cyan);
-    box-shadow: 0 0 10px rgba(85,220,255,.55);
+
+    box-shadow:
+        0 0 10px
+        rgba(85,220,255,.55);
 }
+
 
 /* =========================================================
    EXPLANATION
@@ -819,7 +949,9 @@ button:focus-visible {
 
     margin-top: 24px;
 
-    padding: 28px 30px;
+    padding:
+        28px
+        30px;
 
     border:
         1px solid
@@ -852,7 +984,8 @@ button:focus-visible {
     width: 140px;
     height: 1px;
 
-    transform: translateX(-50%);
+    transform:
+        translateX(-50%);
 
     background:
         linear-gradient(
@@ -863,7 +996,8 @@ button:focus-visible {
         );
 
     box-shadow:
-        0 0 20px rgba(85,220,255,.5);
+        0 0 20px
+        rgba(85,220,255,.5);
 }
 
 .explanation h3 {
@@ -884,13 +1018,12 @@ button:focus-visible {
     line-height: 1.75;
 }
 
+
 /* =========================================================
-   BUTTONS
+   PRIMARY BUTTON
 ========================================================= */
 
 .primary-button {
-    position: relative;
-
     display: flex;
 
     align-items: center;
@@ -898,9 +1031,14 @@ button:focus-visible {
 
     gap: 10px;
 
-    margin: 30px auto 0;
+    margin:
+        30px
+        auto
+        0;
 
-    padding: 16px 28px;
+    padding:
+        16px
+        28px;
 
     border:
         1px solid
@@ -918,12 +1056,14 @@ button:focus-visible {
     color: white;
 
     font-size: 15px;
+
     font-weight: 700;
 
     cursor: pointer;
 
     box-shadow:
-        0 14px 35px rgba(35,117,255,.22);
+        0 14px 35px
+        rgba(35,117,255,.22);
 
     transition:
         transform .25s ease,
@@ -937,9 +1077,11 @@ button:focus-visible {
         scale(1.015);
 
     box-shadow:
-        0 18px 45px rgba(35,117,255,.35);
+        0 18px 45px
+        rgba(35,117,255,.35);
 
-    filter: brightness(1.08);
+    filter:
+        brightness(1.08);
 }
 
 .primary-button:active {
@@ -948,18 +1090,23 @@ button:focus-visible {
         scale(.99);
 }
 
+
 /* =========================================================
    PAGE 2
 ========================================================= */
 
 .back-button {
     display: inline-flex;
+
     align-items: center;
+
     gap: 8px;
 
     margin-bottom: 28px;
 
-    padding: 10px 16px;
+    padding:
+        10px
+        16px;
 
     border:
         1px solid
@@ -979,8 +1126,12 @@ button:focus-visible {
 
 .back-button:hover {
     color: white;
-    border-color: rgba(255,255,255,.2);
-    transform: translateX(-2px);
+
+    border-color:
+        rgba(255,255,255,.2);
+
+    transform:
+        translateX(-2px);
 }
 
 .simulator {
@@ -992,6 +1143,7 @@ button:focus-visible {
 
     gap: 22px;
 }
+
 
 /* =========================================================
    SCENE
@@ -1020,7 +1172,7 @@ button:focus-visible {
         );
 
     box-shadow:
-        var(--shadow);
+        0 25px 80px rgba(0,0,0,.38);
 
     isolation: isolate;
 }
@@ -1029,6 +1181,7 @@ button:focus-visible {
     content: "";
 
     position: absolute;
+
     inset: 0;
 
     background:
@@ -1047,6 +1200,7 @@ button:focus-visible {
     content: "";
 
     position: absolute;
+
     inset: 0;
 
     pointer-events: none;
@@ -1072,8 +1226,8 @@ button:focus-visible {
     color: #8199ad;
 
     font-size: 10px;
+
     letter-spacing: 2px;
-    text-transform: uppercase;
 }
 
 .scene-scale {
@@ -1087,8 +1241,10 @@ button:focus-visible {
     color: #61778b;
 
     font-size: 10px;
+
     letter-spacing: 1px;
 }
+
 
 /* =========================================================
    BACKGROUND PARTICLES
@@ -1102,10 +1258,12 @@ button:focus-visible {
 
     border-radius: 50%;
 
-    background: rgba(110,220,255,.4);
+    background:
+        rgba(110,220,255,.4);
 
     box-shadow:
-        0 0 12px rgba(90,211,255,.25);
+        0 0 12px
+        rgba(90,211,255,.25);
 
     animation:
         backgroundFloat
@@ -1114,16 +1272,17 @@ button:focus-visible {
         infinite;
 }
 
-.bp1 { left: 10%; top: 19%; animation-delay: 0s; }
-.bp2 { left: 83%; top: 23%; animation-delay: 1.2s; }
-.bp3 { left: 27%; top: 79%; animation-delay: 2.4s; }
-.bp4 { left: 72%; top: 76%; animation-delay: 3.3s; }
-.bp5 { left: 15%; top: 54%; animation-delay: 4.1s; }
-.bp6 { left: 90%; top: 61%; animation-delay: 5.1s; }
-.bp7 { left: 54%; top: 13%; animation-delay: 6s; }
-.bp8 { left: 48%; top: 88%; animation-delay: 6.8s; }
+.bp1 { left:10%; top:19%; animation-delay:0s; }
+.bp2 { left:83%; top:23%; animation-delay:1.2s; }
+.bp3 { left:27%; top:79%; animation-delay:2.4s; }
+.bp4 { left:72%; top:76%; animation-delay:3.3s; }
+.bp5 { left:15%; top:54%; animation-delay:4.1s; }
+.bp6 { left:90%; top:61%; animation-delay:5.1s; }
+.bp7 { left:54%; top:13%; animation-delay:6s; }
+.bp8 { left:48%; top:88%; animation-delay:6.8s; }
 
 @keyframes backgroundFloat {
+
     0% {
         transform:
             translate3d(0,0,0)
@@ -1144,6 +1303,7 @@ button:focus-visible {
         opacity: 0;
     }
 }
+
 
 /* =========================================================
    CELLS
@@ -1168,8 +1328,14 @@ button:focus-visible {
         rgba(255,155,195,.26);
 
     box-shadow:
-        0 0 28px rgba(206,86,134,.18),
-        inset -15px -20px 30px rgba(0,0,0,.18);
+        0 0 28px
+        rgba(206,86,134,.18),
+
+        inset
+        -15px
+        -20px
+        30px
+        rgba(0,0,0,.18);
 
     z-index: 4;
 }
@@ -1211,9 +1377,11 @@ button:focus-visible {
 
     border-radius: 50%;
 
-    background: rgba(255,255,255,.18);
+    background:
+        rgba(255,255,255,.18);
 
-    filter: blur(2px);
+    filter:
+        blur(2px);
 }
 
 .cell1 {
@@ -1305,6 +1473,7 @@ button:focus-visible {
 }
 
 @keyframes floatCellA {
+
     0%, 100% {
         transform:
             translate3d(0,0,0)
@@ -1319,6 +1488,7 @@ button:focus-visible {
 }
 
 @keyframes floatCellB {
+
     0%, 100% {
         transform:
             translate3d(0,0,0)
@@ -1331,6 +1501,7 @@ button:focus-visible {
             rotate(-4deg);
     }
 }
+
 
 /* =========================================================
    TARGET REGION
@@ -1409,15 +1580,18 @@ button:focus-visible {
 
     border-radius: 50%;
 
-    background: var(--orange);
+    background:
+        var(--orange);
 
     box-shadow:
-        0 0 15px rgba(255,180,84,.9);
+        0 0 15px
+        rgba(255,180,84,.9);
 }
 
 @keyframes targetSpin {
     to {
-        transform: rotate(360deg);
+        transform:
+            rotate(360deg);
     }
 }
 
@@ -1437,8 +1611,10 @@ button:focus-visible {
     color: #eac681;
 
     font-size: 10px;
+
     letter-spacing: 1.7px;
 }
+
 
 /* =========================================================
    POLYMER DEPOT
@@ -1460,6 +1636,8 @@ button:focus-visible {
 }
 
 .depot {
+    position: relative;
+
     width: 100%;
     height: 100%;
 
@@ -1480,9 +1658,17 @@ button:focus-visible {
         rgba(255,200,130,.35);
 
     box-shadow:
-        0 0 30px rgba(255,157,50,.35),
-        0 0 80px rgba(255,148,40,.1),
-        inset -18px -22px 32px rgba(0,0,0,.34);
+        0 0 30px
+        rgba(255,157,50,.35),
+
+        0 0 80px
+        rgba(255,148,40,.1),
+
+        inset
+        -18px
+        -22px
+        32px
+        rgba(0,0,0,.34);
 
     animation:
         depotPulse
@@ -1550,26 +1736,35 @@ button:focus-visible {
 }
 
 @keyframes releaseWave {
+
     0% {
-        transform: scale(.86);
+        transform:
+            scale(.86);
+
         opacity: .9;
     }
 
     100% {
-        transform: scale(1.42);
+        transform:
+            scale(1.42);
+
         opacity: 0;
     }
 }
 
 @keyframes depotPulse {
+
     0%, 100% {
-        transform: scale(1);
+        transform:
+            scale(1);
     }
 
     50% {
-        transform: scale(1.035);
+        transform:
+            scale(1.035);
     }
 }
+
 
 /* =========================================================
    DRUG PARTICLES
@@ -1599,8 +1794,11 @@ button:focus-visible {
         );
 
     box-shadow:
-        0 0 14px rgba(50,221,255,.9),
-        0 0 28px rgba(50,221,255,.35);
+        0 0 14px
+        rgba(50,221,255,.9),
+
+        0 0 28px
+        rgba(50,221,255,.35);
 
     pointer-events: none;
 
@@ -1623,8 +1821,9 @@ button:focus-visible {
         rgba(114,232,255,.16);
 }
 
+
 /* =========================================================
-   SCENE INFO TAGS
+   SCENE TAGS
 ========================================================= */
 
 .scene-tag {
@@ -1632,7 +1831,9 @@ button:focus-visible {
 
     z-index: 20;
 
-    padding: 8px 11px;
+    padding:
+        8px
+        11px;
 
     border:
         1px solid
@@ -1649,6 +1850,7 @@ button:focus-visible {
     color: #7891a5;
 
     font-size: 9px;
+
     letter-spacing: 1px;
 
     text-transform: uppercase;
@@ -1664,12 +1866,14 @@ button:focus-visible {
     bottom: 20px;
 }
 
+
 /* =========================================================
-   SIM INFO PANEL
+   INFORMATION PANEL
 ========================================================= */
 
 .sim-info {
     display: flex;
+
     flex-direction: column;
 
     padding: 30px;
@@ -1689,7 +1893,7 @@ button:focus-visible {
         );
 
     box-shadow:
-        var(--shadow);
+        0 25px 80px rgba(0,0,0,.38);
 
     backdrop-filter:
         blur(14px);
@@ -1697,6 +1901,7 @@ button:focus-visible {
 
 .sim-info h2 {
     font-size: 29px;
+
     line-height: 1.15;
 
     margin-bottom: 8px;
@@ -1711,6 +1916,7 @@ button:focus-visible {
 
     margin-bottom: 25px;
 }
+
 
 /* =========================================================
    STATUS
@@ -1732,17 +1938,21 @@ button:focus-visible {
 
     border-radius: 50%;
 
-    background: var(--cyan);
+    background:
+        var(--cyan);
 
     box-shadow:
-        0 0 14px rgba(85,220,255,.8);
+        0 0 14px
+        rgba(85,220,255,.8);
 }
 
 .sim-info.paused .status-light {
-    background: var(--orange);
+    background:
+        var(--orange);
 
     box-shadow:
-        0 0 14px rgba(255,180,84,.8);
+        0 0 14px
+        rgba(255,180,84,.8);
 }
 
 .status {
@@ -1755,8 +1965,9 @@ button:focus-visible {
     font-weight: 800;
 }
 
+
 /* =========================================================
-   TIMER / PROGRESS
+   TIMER
 ========================================================= */
 
 .timer {
@@ -1781,8 +1992,14 @@ button:focus-visible {
     margin-left: 4px;
 }
 
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
 .progress-meta {
     display: flex;
+
     justify-content: space-between;
 
     margin-bottom: 8px;
@@ -1798,6 +2015,7 @@ button:focus-visible {
 
 .progress-bg {
     width: 100%;
+
     height: 10px;
 
     overflow: hidden;
@@ -1823,14 +2041,16 @@ button:focus-visible {
         );
 
     box-shadow:
-        0 0 18px rgba(85,220,255,.35);
+        0 0 18px
+        rgba(85,220,255,.35);
 
     transition:
         width .08s linear;
 }
 
+
 /* =========================================================
-   RELEASE COUNTER
+   DOSE COUNTER
 ========================================================= */
 
 .dose-count {
@@ -1864,6 +2084,7 @@ button:focus-visible {
     font-weight: 800;
 }
 
+
 /* =========================================================
    STAGES
 ========================================================= */
@@ -1878,8 +2099,7 @@ button:focus-visible {
 
     margin:
         18px
-        0
-        18px;
+        0;
 }
 
 .stage {
@@ -1912,8 +2132,9 @@ button:focus-visible {
     width: 100%;
 }
 
+
 /* =========================================================
-   EVENT PANEL
+   EVENT
 ========================================================= */
 
 .event {
@@ -1960,6 +2181,7 @@ button:focus-visible {
     line-height: 1.7;
 }
 
+
 /* =========================================================
    CONTROLS
 ========================================================= */
@@ -1977,7 +2199,9 @@ button:focus-visible {
 }
 
 .control-button {
-    padding: 14px 12px;
+    padding:
+        14px
+        12px;
 
     border-radius: 13px;
 
@@ -2000,7 +2224,8 @@ button:focus-visible {
 }
 
 .control-button:hover {
-    transform: translateY(-2px);
+    transform:
+        translateY(-2px);
 
     background:
         rgba(255,255,255,.08);
@@ -2017,20 +2242,13 @@ button:focus-visible {
         );
 
     box-shadow:
-        0 10px 25px rgba(43,113,255,.2);
+        0 10px 25px
+        rgba(43,113,255,.2);
 }
 
-.control-button.primary:hover {
-    background:
-        linear-gradient(
-            135deg,
-            #19a9d2,
-            #4b6bff
-        );
-}
 
 /* =========================================================
-   FOOTNOTE
+   SCIENTIFIC NOTE
 ========================================================= */
 
 .scientific-note {
@@ -2045,11 +2263,13 @@ button:focus-visible {
     text-align: center;
 }
 
+
 /* =========================================================
    RESPONSIVE
 ========================================================= */
 
 @media (max-width: 900px) {
+
     .compare {
         grid-template-columns: 1fr;
     }
@@ -2064,6 +2284,7 @@ button:focus-visible {
 }
 
 @media (max-width: 600px) {
+
     .page {
         padding:
             18px
@@ -2076,7 +2297,9 @@ button:focus-visible {
     }
 
     .language-box {
-        padding: 28px 22px;
+        padding:
+            28px
+            22px;
     }
 
     .language-buttons {
@@ -2136,7 +2359,8 @@ button:focus-visible {
     }
 
     .target-label {
-        top: calc(50% + 106px);
+        top:
+            calc(50% + 106px);
     }
 
     .timer {
@@ -2144,24 +2368,35 @@ button:focus-visible {
     }
 }
 
+
 /* =========================================================
    REDUCED MOTION
 ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
-        animation-duration: .001ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-        transition-duration: .001ms !important;
+        animation-duration:
+            .001ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        scroll-behavior:
+            auto !important;
+
+        transition-duration:
+            .001ms !important;
     }
 }
+
 </style>
+
 </head>
 
-<body class="modal-open">
+<body>
 
 <!-- =========================================================
      LANGUAGE SELECTION
@@ -2174,41 +2409,45 @@ button:focus-visible {
     aria-modal="true"
     aria-labelledby="languageTitle"
 >
-    <div class="language-box">
 
-        <div class="language-icon">
-            <span>🧬</span>
-        </div>
+```
+<div class="language-box">
 
-        <h2 id="languageTitle">
-            Choose your language
-        </h2>
+    <div class="language-icon">
+        <span>🧬</span>
+    </div>
 
-        <p>
-            Válaszd ki, hogy milyen nyelven szeretnéd látni a bemutatót.
-        </p>
+    <h2 id="languageTitle">
+        Choose your language
+    </h2>
 
-        <div class="language-buttons">
+    <p>
+        Válaszd ki, hogy milyen nyelven szeretnéd látni a bemutatót.
+    </p>
 
-            <button
-                class="language-button"
-                data-language="en"
-            >
-                <strong>English</strong>
-                <span>Presentation language</span>
-            </button>
+    <div class="language-buttons">
 
-            <button
-                class="language-button"
-                data-language="hu"
-            >
-                <strong>Magyar</strong>
-                <span>Bemutató nyelve</span>
-            </button>
+        <button
+            class="language-button"
+            data-language="en"
+        >
+            <strong>English</strong>
+            <span>Presentation language</span>
+        </button>
 
-        </div>
+        <button
+            class="language-button"
+            data-language="hu"
+        >
+            <strong>Magyar</strong>
+            <span>Bemutató nyelve</span>
+        </button>
 
     </div>
+
+</div>
+```
+
 </div>
 
 <!-- =========================================================
@@ -2226,368 +2465,392 @@ button:focus-visible {
     class="page active"
 >
 
-    <div class="topbar">
+```
+<div class="topbar">
 
-        <div class="brand">
-            <span class="brand-dot"></span>
+    <div class="brand">
 
-            <span>
-                ROBERT LANGER · BIOMEDICAL ENGINEERING
-            </span>
-        </div>
+        <span class="brand-dot"></span>
 
-        <div class="language-switcher">
-
-            <button
-                class="lang-option active"
-                data-switch-language="en"
-                aria-label="Switch to English"
-            >
-                EN
-            </button>
-
-            <button
-                class="lang-option"
-                data-switch-language="hu"
-                aria-label="Switch to Hungarian"
-            >
-                HU
-            </button>
-
-        </div>
+        <span>
+            ROBERT LANGER · BIOMEDICAL ENGINEERING
+        </span>
 
     </div>
 
-    <div class="container">
-
-        <h1 class="hero-title">
-
-            ROBERT
-            <span class="highlight">
-                LANGER
-            </span>
-
-        </h1>
-
-        <p
-            class="subtitle"
-            data-i18n="heroSubtitle"
-        >
-            Exploring the idea behind controlled drug delivery.
-        </p>
-
-
-        <!-- =========================
-             COMPARISON
-        ========================== -->
-
-        <div class="compare">
-
-
-            <!-- TRADITIONAL -->
-
-            <article class="card traditional">
-
-                <div class="card-header">
-
-                    <div>
-                        <div class="card-number">
-                            01 · Traditional approach
-                        </div>
-
-                        <h2 data-i18n="traditionalTitle">
-                            Traditional dosing
-                        </h2>
-                    </div>
-
-                </div>
-
-                <p
-                    class="card-description"
-                    data-i18n="traditionalText"
-                >
-                    A dose is taken → drug concentration rises →
-                    concentration falls → another dose is needed.
-                </p>
-
-                <div class="graph-wrap">
-
-                    <div class="graph">
-
-                        <div
-                            class="graph-label"
-                            data-i18n="concentration"
-                        >
-                            Drug concentration
-                        </div>
-
-                        <svg
-                            viewBox="0 0 600 240"
-                            preserveAspectRatio="none"
-                            aria-label="Traditional dosing graph"
-                        >
-
-                            <path
-                                id="traditionalPath"
-                                class="graph-line traditional-line"
-                                pathLength="1"
-                                d="
-                                    M0 218
-                                    L35 218
-                                    L58 38
-                                    L82 218
-                                    L135 218
-                                    L158 38
-                                    L182 218
-                                    L235 218
-                                    L258 38
-                                    L282 218
-                                    L335 218
-                                    L358 38
-                                    L382 218
-                                    L435 218
-                                    L458 38
-                                    L482 218
-                                    L535 218
-                                    L558 38
-                                    L582 218
-                                    L600 218
-                                "
-                            />
-
-                            <circle
-                                class="graph-peak peak-1"
-                                cx="58"
-                                cy="38"
-                                r="8"
-                                fill="#ff685e"
-                            />
-
-                            <circle
-                                class="graph-peak peak-2"
-                                cx="158"
-                                cy="38"
-                                r="8"
-                                fill="#ff685e"
-                            />
-
-                            <circle
-                                class="graph-peak peak-3"
-                                cx="258"
-                                cy="38"
-                                r="8"
-                                fill="#ff685e"
-                            />
-
-                            <circle
-                                class="graph-peak peak-4"
-                                cx="358"
-                                cy="38"
-                                r="8"
-                                fill="#ff685e"
-                            />
-
-                            <circle
-                                class="graph-peak peak-5"
-                                cx="458"
-                                cy="38"
-                                r="8"
-                                fill="#ff685e"
-                            />
-
-                            <circle
-                                class="graph-peak peak-6"
-                                cx="558"
-                                cy="38"
-                                r="8"
-                                fill="#ff685e"
-                            />
-
-                        </svg>
-
-                        <span
-                            class="graph-axis a0"
-                        >0h</span>
-
-                        <span
-                            class="graph-axis a4"
-                        >4h</span>
-
-                        <span
-                            class="graph-axis a8"
-                        >8h</span>
-
-                        <span
-                            class="graph-axis a12"
-                        >12h</span>
-
-                        <span
-                            class="graph-axis a16"
-                        >16h</span>
-
-                    </div>
-
-                </div>
-
-                <div class="legend">
-
-                    <span class="legend-item">
-
-                        <span class="dot red"></span>
-
-                        <span data-i18n="peakLegend">
-                            Repeated dose peaks
-                        </span>
-
-                    </span>
-
-                </div>
-
-            </article>
-
-
-            <!-- CONTROLLED -->
-
-            <article class="card controlled">
-
-                <div class="card-header">
-
-                    <div>
-                        <div class="card-number">
-                            02 · Controlled approach
-                        </div>
-
-                        <h2 data-i18n="controlledTitle">
-                            Controlled release
-                        </h2>
-                    </div>
-
-                </div>
-
-                <p
-                    class="card-description"
-                    data-i18n="controlledText"
-                >
-                    A delivery system can release an active substance
-                    gradually over an extended period.
-                </p>
-
-                <div class="graph-wrap">
-
-                    <div class="graph">
-
-                        <div
-                            class="graph-label"
-                            data-i18n="concentration"
-                        >
-                            Drug concentration
-                        </div>
-
-                        <svg
-                            viewBox="0 0 600 240"
-                            preserveAspectRatio="none"
-                            aria-label="Controlled release graph"
-                        >
-
-                            <path
-                                class="graph-line controlled-line"
-                                pathLength="1"
-                                d="
-                                    M0 218
-                                    C48 199 84 152 132 124
-                                    C173 100 218 89 266 91
-                                    C321 94 360 87 414 86
-                                    C474 84 528 89 600 84
-                                "
-                            />
-
-                        </svg>
-
-                        <span
-                            class="graph-axis a0"
-                        >0h</span>
-
-                        <span
-                            class="graph-axis a4"
-                        >4h</span>
-
-                        <span
-                            class="graph-axis a8"
-                        >8h</span>
-
-                        <span
-                            class="graph-axis a12"
-                        >12h</span>
-
-                        <span
-                            class="graph-axis a16"
-                        >16h</span>
-
-                    </div>
-
-                </div>
-
-                <div class="legend">
-
-                    <span class="legend-item">
-
-                        <span class="dot blue"></span>
-
-                        <span data-i18n="gradualLegend">
-                            Gradual release
-                        </span>
-
-                    </span>
-
-                </div>
-
-            </article>
-
-        </div>
-
-
-        <!-- =========================
-             EXPLANATION
-        ========================== -->
-
-        <section class="explanation">
-
-            <h3 data-i18n="whyTitle">
-                Why does controlled release matter?
-            </h3>
-
-            <p data-i18n="whyText1">
-                Instead of repeatedly delivering a large separate dose,
-                a delivery system can be designed to control how quickly
-                an active substance becomes available.
-            </p>
-
-            <br />
-
-            <p data-i18n="whyText2">
-                Robert Langer's research helped establish important
-                approaches to using polymers and other materials to
-                control the release of substances.
-            </p>
-
-        </section>
-
+    <div class="language-switcher">
 
         <button
-            class="primary-button"
-            id="openSimulation"
+            class="lang-option active"
+            data-switch-language="en"
         >
-            <span data-i18n="seeSystem">
-                SEE THE DRUG DELIVERY SYSTEM
-            </span>
+            EN
+        </button>
 
-            <span>→</span>
+        <button
+            class="lang-option"
+            data-switch-language="hu"
+        >
+            HU
         </button>
 
     </div>
 
-</section>
+</div>
 
+
+<div class="container">
+
+    <h1 class="hero-title">
+
+        ROBERT
+        <span class="highlight">
+            LANGER
+        </span>
+
+    </h1>
+
+
+    <p
+        class="subtitle"
+        data-i18n="heroSubtitle"
+    >
+        Exploring the idea behind controlled drug delivery.
+    </p>
+
+
+    <!-- =================================================
+         COMPARISON
+    ================================================== -->
+
+    <div class="compare">
+
+
+        <!-- TRADITIONAL -->
+
+        <article class="card traditional">
+
+            <div class="card-header">
+
+                <div class="card-number">
+                    01 · Traditional approach
+                </div>
+
+                <h2
+                    data-i18n="traditionalTitle"
+                >
+                    Traditional dosing
+                </h2>
+
+            </div>
+
+
+            <p
+                class="card-description"
+                data-i18n="traditionalText"
+            >
+                A dose is taken → drug concentration rises →
+                concentration falls → another dose is needed.
+            </p>
+
+
+            <div class="graph-wrap">
+
+                <div
+                    class="graph"
+                    id="traditionalGraph"
+                >
+
+                    <div
+                        class="graph-label"
+                        data-i18n="concentration"
+                    >
+                        Drug concentration
+                    </div>
+
+
+                    <svg
+                        viewBox="0 0 600 240"
+                        preserveAspectRatio="none"
+                        aria-label="Traditional dosing graph"
+                    >
+
+                        <path
+                            class="graph-line traditional-line"
+                            pathLength="1"
+                            d="
+                                M0 218
+                                L35 218
+                                L58 38
+                                L82 218
+                                L135 218
+                                L158 38
+                                L182 218
+                                L235 218
+                                L258 38
+                                L282 218
+                                L335 218
+                                L358 38
+                                L382 218
+                                L435 218
+                                L458 38
+                                L482 218
+                                L535 218
+                                L558 38
+                                L582 218
+                                L600 218
+                            "
+                        />
+
+
+                        <circle
+                            class="graph-peak peak-1"
+                            cx="58"
+                            cy="38"
+                            r="8"
+                            fill="#ff685e"
+                        />
+
+                        <circle
+                            class="graph-peak peak-2"
+                            cx="158"
+                            cy="38"
+                            r="8"
+                            fill="#ff685e"
+                        />
+
+                        <circle
+                            class="graph-peak peak-3"
+                            cx="258"
+                            cy="38"
+                            r="8"
+                            fill="#ff685e"
+                        />
+
+                        <circle
+                            class="graph-peak peak-4"
+                            cx="358"
+                            cy="38"
+                            r="8"
+                            fill="#ff685e"
+                        />
+
+                        <circle
+                            class="graph-peak peak-5"
+                            cx="458"
+                            cy="38"
+                            r="8"
+                            fill="#ff685e"
+                        />
+
+                        <circle
+                            class="graph-peak peak-6"
+                            cx="558"
+                            cy="38"
+                            r="8"
+                            fill="#ff685e"
+                        />
+
+                    </svg>
+
+
+                    <span class="graph-axis a0">
+                        0h
+                    </span>
+
+                    <span class="graph-axis a4">
+                        4h
+                    </span>
+
+                    <span class="graph-axis a8">
+                        8h
+                    </span>
+
+                    <span class="graph-axis a12">
+                        12h
+                    </span>
+
+                    <span class="graph-axis a16">
+                        16h
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="legend">
+
+                <span class="legend-item">
+
+                    <span class="dot red"></span>
+
+                    <span data-i18n="peakLegend">
+                        Repeated dose peaks
+                    </span>
+
+                </span>
+
+            </div>
+
+        </article>
+
+
+        <!-- CONTROLLED -->
+
+        <article class="card controlled">
+
+            <div class="card-header">
+
+                <div class="card-number">
+                    02 · Controlled approach
+                </div>
+
+                <h2
+                    data-i18n="controlledTitle"
+                >
+                    Controlled release
+                </h2>
+
+            </div>
+
+
+            <p
+                class="card-description"
+                data-i18n="controlledText"
+            >
+                A delivery system can release an active substance
+                gradually over an extended period.
+            </p>
+
+
+            <div class="graph-wrap">
+
+                <div
+                    class="graph"
+                    id="controlledGraph"
+                >
+
+                    <div
+                        class="graph-label"
+                        data-i18n="concentration"
+                    >
+                        Drug concentration
+                    </div>
+
+
+                    <svg
+                        viewBox="0 0 600 240"
+                        preserveAspectRatio="none"
+                        aria-label="Controlled release graph"
+                    >
+
+                        <path
+                            class="graph-line controlled-line"
+                            pathLength="1"
+                            d="
+                                M0 218
+                                C48 199 84 152 132 124
+                                C173 100 218 89 266 91
+                                C321 94 360 87 414 86
+                                C474 84 528 89 600 84
+                            "
+                        />
+
+                    </svg>
+
+
+                    <span class="graph-axis a0">
+                        0h
+                    </span>
+
+                    <span class="graph-axis a4">
+                        4h
+                    </span>
+
+                    <span class="graph-axis a8">
+                        8h
+                    </span>
+
+                    <span class="graph-axis a12">
+                        12h
+                    </span>
+
+                    <span class="graph-axis a16">
+                        16h
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="legend">
+
+                <span class="legend-item">
+
+                    <span class="dot blue"></span>
+
+                    <span data-i18n="gradualLegend">
+                        Gradual release
+                    </span>
+
+                </span>
+
+            </div>
+
+        </article>
+
+    </div>
+
+
+    <!-- =================================================
+         EXPLANATION
+    ================================================== -->
+
+    <section class="explanation">
+
+        <h3 data-i18n="whyTitle">
+            Why does controlled release matter?
+        </h3>
+
+
+        <p data-i18n="whyText1">
+            Instead of repeatedly delivering a large separate dose,
+            a delivery system can be designed to control how quickly
+            an active substance becomes available.
+        </p>
+
+
+        <br>
+
+
+        <p data-i18n="whyText2">
+            Robert Langer's research helped establish important
+            approaches to using polymers and other materials to
+            control the release of substances.
+        </p>
+
+    </section>
+
+
+    <button
+        class="primary-button"
+        id="openSimulation"
+    >
+
+        <span data-i18n="seeSystem">
+            SEE THE DRUG DELIVERY SYSTEM
+        </span>
+
+        <span>→</span>
+
+    </button>
+
+</div>
+```
+
+</section>
 
 <!-- =========================================================
      PAGE 2
@@ -2598,398 +2861,452 @@ button:focus-visible {
     class="page"
 >
 
-    <div class="topbar">
+```
+<div class="topbar">
 
-        <div class="brand">
-            <span class="brand-dot"></span>
+    <div class="brand">
 
-            <span>
-                CONTROLLED RELEASE · INTERACTIVE MODEL
-            </span>
-        </div>
+        <span class="brand-dot"></span>
 
-        <div class="language-switcher">
-
-            <button
-                class="lang-option active"
-                data-switch-language="en"
-            >
-                EN
-            </button>
-
-            <button
-                class="lang-option"
-                data-switch-language="hu"
-            >
-                HU
-            </button>
-
-        </div>
+        <span>
+            CONTROLLED RELEASE · INTERACTIVE MODEL
+        </span>
 
     </div>
 
-    <div class="container">
+
+    <div class="language-switcher">
 
         <button
-            class="back-button"
-            id="backButton"
+            class="lang-option active"
+            data-switch-language="en"
         >
-            <span>←</span>
-
-            <span data-i18n="back">
-                Back
-            </span>
+            EN
         </button>
 
-
-        <h1 class="hero-title">
-
-            CONTROLLED
-            <span class="highlight">
-                RELEASE
-            </span>
-
-        </h1>
-
-        <p
-            class="subtitle"
-            data-i18n="simSubtitle"
+        <button
+            class="lang-option"
+            data-switch-language="hu"
         >
-            Watch a polymer depot release drug particles into a
-            simplified microscopic environment.
-        </p>
+            HU
+        </button>
+
+    </div>
+
+</div>
 
 
-        <div class="simulator">
+<div class="container">
 
 
-            <!-- =================================================
-                 MICROSCOPIC SCENE
-            ================================================== -->
+    <button
+        class="back-button"
+        id="backButton"
+    >
+
+        <span>←</span>
+
+        <span data-i18n="back">
+            Back
+        </span>
+
+    </button>
+
+
+    <h1 class="hero-title">
+
+        CONTROLLED
+        <span class="highlight">
+            RELEASE
+        </span>
+
+    </h1>
+
+
+    <p
+        class="subtitle"
+        data-i18n="simSubtitle"
+    >
+        Watch a polymer depot release drug particles into a
+        simplified microscopic environment.
+    </p>
+
+
+    <div class="simulator">
+
+
+        <!-- =================================================
+             MICROSCOPIC SCENE
+        ================================================== -->
+
+        <div
+            class="scene"
+            id="scene"
+        >
 
             <div
-                class="scene"
-                id="scene"
+                class="scene-label"
+                data-i18n="sceneLabel"
             >
-
-                <div
-                    class="scene-label"
-                    data-i18n="sceneLabel"
-                >
-                    MICROSCOPIC VIEW · SCHEMATIC
-                </div>
-
-                <div
-                    class="scene-scale"
-                    data-i18n="sceneScale"
-                >
-                    ILLUSTRATIVE MODEL
-                </div>
+                MICROSCOPIC VIEW · SCHEMATIC
+            </div>
 
 
-                <!-- FLOATING PARTICLES -->
-
-                <div class="background-particle bp1"></div>
-                <div class="background-particle bp2"></div>
-                <div class="background-particle bp3"></div>
-                <div class="background-particle bp4"></div>
-                <div class="background-particle bp5"></div>
-                <div class="background-particle bp6"></div>
-                <div class="background-particle bp7"></div>
-                <div class="background-particle bp8"></div>
+            <div
+                class="scene-scale"
+                data-i18n="sceneScale"
+            >
+                ILLUSTRATIVE MODEL
+            </div>
 
 
-                <!-- CELLS -->
+            <!-- FLOATING PARTICLES -->
 
-                <div class="cell cell1"></div>
-                <div class="cell cell2"></div>
-                <div class="cell cell3"></div>
-                <div class="cell cell4"></div>
-                <div class="cell cell5"></div>
-                <div class="cell cell6"></div>
-
-
-                <!-- TARGET -->
-
-                <div class="target-ring">
-                    <div class="target-rotator"></div>
-                </div>
-
-                <div
-                    class="target-label"
-                    data-i18n="target"
-                >
-                    TARGET REGION · SCHEMATIC
-                </div>
+            <div class="background-particle bp1"></div>
+            <div class="background-particle bp2"></div>
+            <div class="background-particle bp3"></div>
+            <div class="background-particle bp4"></div>
+            <div class="background-particle bp5"></div>
+            <div class="background-particle bp6"></div>
+            <div class="background-particle bp7"></div>
+            <div class="background-particle bp8"></div>
 
 
-                <!-- DEPOT -->
+            <!-- CELLS -->
 
-                <div class="depot-shell">
+            <div class="cell cell1"></div>
+            <div class="cell cell2"></div>
+            <div class="cell cell3"></div>
+            <div class="cell cell4"></div>
+            <div class="cell cell5"></div>
+            <div class="cell cell6"></div>
 
-                    <div class="depot">
 
-                        <div
-                            class="depot-label"
-                            data-i18n="polymerDepot"
-                        >
-                            POLYMER<br />DEPOT
-                        </div>
+            <!-- TARGET -->
 
+            <div class="target-ring">
+
+                <div class="target-rotator"></div>
+
+            </div>
+
+
+            <div
+                class="target-label"
+                data-i18n="target"
+            >
+                TARGET REGION · SCHEMATIC
+            </div>
+
+
+            <!-- DEPOT -->
+
+            <div class="depot-shell">
+
+                <div class="depot">
+
+                    <div
+                        class="depot-label"
+                        data-i18n="polymerDepot"
+                    >
+                        POLYMER<br>
+                        DEPOT
                     </div>
 
-                    <div class="depot-pulse"></div>
-
                 </div>
 
 
-                <!-- DRUG PARTICLES -->
+                <div class="depot-pulse"></div>
 
-                <div class="drug" data-particle="0"></div>
-                <div class="drug" data-particle="1"></div>
-                <div class="drug" data-particle="2"></div>
-                <div class="drug" data-particle="3"></div>
-                <div class="drug" data-particle="4"></div>
-                <div class="drug" data-particle="5"></div>
-                <div class="drug" data-particle="6"></div>
-                <div class="drug" data-particle="7"></div>
+            </div>
 
 
-                <!-- SCENE TAGS -->
+            <!-- DRUG PARTICLES -->
+
+            <div
+                class="drug"
+                data-particle="0"
+            ></div>
+
+            <div
+                class="drug"
+                data-particle="1"
+            ></div>
+
+            <div
+                class="drug"
+                data-particle="2"
+            ></div>
+
+            <div
+                class="drug"
+                data-particle="3"
+            ></div>
+
+            <div
+                class="drug"
+                data-particle="4"
+            ></div>
+
+            <div
+                class="drug"
+                data-particle="5"
+            ></div>
+
+            <div
+                class="drug"
+                data-particle="6"
+            ></div>
+
+            <div
+                class="drug"
+                data-particle="7"
+            ></div>
+
+
+            <!-- SCENE TAGS -->
+
+            <div
+                class="scene-tag tag-cells"
+                data-i18n="cellsTag"
+            >
+                Cells · schematic
+            </div>
+
+            <div
+                class="scene-tag tag-release"
+                data-i18n="releaseTag"
+            >
+                Active substance
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             INFORMATION PANEL
+        ================================================== -->
+
+        <aside
+            class="sim-info"
+            id="simInfo"
+        >
+
+            <h2 data-i18n="simTitle">
+                Drug Delivery Simulator
+            </h2>
+
+
+            <p
+                class="small"
+                data-i18n="simDisclaimer"
+            >
+                Illustrative controlled-release model.
+                The microscopic scene is schematic, not a
+                representation of an actual patient.
+            </p>
+
+
+            <!-- STATUS -->
+
+            <div class="status-row">
+
+                <span class="status-light"></span>
 
                 <div
-                    class="scene-tag tag-cells"
-                    data-i18n="cellsTag"
+                    class="status"
+                    id="status"
                 >
-                    Cells · schematic
-                </div>
-
-                <div
-                    class="scene-tag tag-release"
-                    data-i18n="releaseTag"
-                >
-                    Active substance
+                    SYSTEM READY
                 </div>
 
             </div>
 
 
-            <!-- =================================================
-                 INFORMATION PANEL
-            ================================================== -->
+            <!-- TIMER -->
 
-            <aside
-                class="sim-info"
-                id="simInfo"
-            >
+            <div class="timer">
 
-                <h2 data-i18n="simTitle">
-                    Drug Delivery Simulator
-                </h2>
+                <span id="hours">
+                    0.0
+                </span>
 
-                <p
-                    class="small"
-                    data-i18n="simDisclaimer"
+                <span
+                    class="timer-unit"
+                    data-i18n="hoursUnit"
                 >
-                    Illustrative controlled-release model.
-                    The microscopic scene is schematic, not a
-                    representation of an actual patient.
-                </p>
+                    h simulated
+                </span>
+
+            </div>
 
 
-                <!-- STATUS -->
+            <!-- PROGRESS -->
 
-                <div class="status-row">
+            <div class="progress-meta">
 
-                    <span class="status-light"></span>
+                <span data-i18n="elapsed">
+                    Simulation
+                </span>
 
-                    <div
-                        class="status"
-                        id="status"
-                        data-i18n="ready"
-                    >
-                        SYSTEM READY
-                    </div>
+                <span id="percent">
+                    0%
+                </span>
 
-                </div>
+            </div>
 
 
-                <!-- TIMER -->
-
-                <div class="timer">
-
-                    <span id="hours">
-                        0.0
-                    </span>
-
-                    <span
-                        class="timer-unit"
-                        data-i18n="hoursUnit"
-                    >
-                        h simulated
-                    </span>
-
-                </div>
-
-
-                <!-- PROGRESS -->
-
-                <div class="progress-meta">
-
-                    <span data-i18n="elapsed">
-                        Simulation
-                    </span>
-
-                    <span id="percent">
-                        0%
-                    </span>
-
-                </div>
-
-                <div class="progress-bg">
-
-                    <div
-                        class="progress"
-                        id="progress"
-                    ></div>
-
-                </div>
-
-
-                <!-- RELEASE COUNT -->
-
-                <div class="dose-count">
-
-                    <span data-i18n="released">
-                        Drug particles released
-                    </span>
-
-                    <span
-                        class="dose-number"
-                        id="dose"
-                    >
-                        0
-                    </span>
-
-                </div>
-
-
-                <!-- STAGE INDICATOR -->
+            <div class="progress-bg">
 
                 <div
-                    class="stage-strip"
-                    id="stageStrip"
+                    class="progress"
+                    id="progress"
+                ></div>
+
+            </div>
+
+
+            <!-- DOSE -->
+
+            <div class="dose-count">
+
+                <span data-i18n="released">
+                    Drug particles released
+                </span>
+
+                <span
+                    class="dose-number"
+                    id="dose"
+                >
+                    0
+                </span>
+
+            </div>
+
+
+            <!-- STAGES -->
+
+            <div
+                class="stage-strip"
+                id="stageStrip"
+            >
+
+                <div class="stage">
+                    <div class="stage-fill"></div>
+                </div>
+
+                <div class="stage">
+                    <div class="stage-fill"></div>
+                </div>
+
+                <div class="stage">
+                    <div class="stage-fill"></div>
+                </div>
+
+                <div class="stage">
+                    <div class="stage-fill"></div>
+                </div>
+
+                <div class="stage">
+                    <div class="stage-fill"></div>
+                </div>
+
+            </div>
+
+
+            <!-- EVENT -->
+
+            <div class="event">
+
+                <div
+                    class="event-kicker"
+                    id="eventKicker"
+                >
+                    WAITING
+                </div>
+
+
+                <div
+                    class="event-title"
+                    id="eventTitle"
+                >
+                    Ready to begin
+                </div>
+
+
+                <div
+                    class="event-text"
+                    id="eventText"
+                >
+                    Press START to see the polymer depot
+                    gradually release active substance.
+                </div>
+
+            </div>
+
+
+            <!-- CONTROLS -->
+
+            <div class="controls">
+
+                <button
+                    class="control-button primary"
+                    id="startButton"
                 >
 
-                    <div class="stage">
-                        <div class="stage-fill"></div>
-                    </div>
+                    ▶
+                    <span>
+                        START
+                    </span>
 
-                    <div class="stage">
-                        <div class="stage-fill"></div>
-                    </div>
-
-                    <div class="stage">
-                        <div class="stage-fill"></div>
-                    </div>
-
-                    <div class="stage">
-                        <div class="stage-fill"></div>
-                    </div>
-
-                    <div class="stage">
-                        <div class="stage-fill"></div>
-                    </div>
-
-                </div>
+                </button>
 
 
-                <!-- EVENT -->
-
-                <div class="event">
-
-                    <div
-                        class="event-kicker"
-                        id="eventKicker"
-                        data-i18n="waiting"
-                    >
-                        WAITING
-                    </div>
-
-                    <div
-                        class="event-title"
-                        id="eventTitle"
-                        data-i18n="eventWaitingTitle"
-                    >
-                        Ready to begin
-                    </div>
-
-                    <div
-                        class="event-text"
-                        id="eventText"
-                        data-i18n="eventWaitingText"
-                    >
-                        Press START to see the polymer depot
-                        gradually release active substance.
-                    </div>
-
-                </div>
-
-
-                <!-- CONTROLS -->
-
-                <div class="controls">
-
-                    <button
-                        class="control-button primary"
-                        id="startButton"
-                    >
-                        ▶
-                        <span data-i18n="start">
-                            START
-                        </span>
-                    </button>
-
-                    <button
-                        class="control-button"
-                        id="resetButton"
-                    >
-                        ↻
-                        <span data-i18n="reset">
-                            RESET
-                        </span>
-                    </button>
-
-                </div>
-
-
-                <p
-                    class="scientific-note"
-                    data-i18n="scientificNote"
+                <button
+                    class="control-button"
+                    id="resetButton"
                 >
-                    This animation illustrates the concept of controlled
-                    release rather than real pharmacokinetic patient data.
-                </p>
 
-            </aside>
+                    ↻
+                    <span>
+                        RESET
+                    </span>
 
-        </div>
+                </button>
+
+            </div>
+
+
+            <p
+                class="scientific-note"
+                data-i18n="scientificNote"
+            >
+                This animation illustrates the concept of
+                controlled release rather than real
+                pharmacokinetic patient data.
+            </p>
+
+        </aside>
 
     </div>
+
+</div>
+```
 
 </section>
 
 </div>
 
-
 <script>
+
 /* =========================================================
-   LANGUAGE DATA
+   TRANSLATIONS
 ========================================================= */
 
 const translations = {
 
     en: {
+
         heroSubtitle:
             "Exploring the idea behind controlled drug delivery.",
 
@@ -3107,6 +3424,9 @@ const translations = {
         gradualText:
             "Small amounts leave the depot over time instead of appearing as one large immediate pulse.",
 
+        sustained:
+            "SUSTAINED DELIVERY",
+
         sustainedTitle:
             "STEADY DELIVERY",
 
@@ -3140,15 +3460,14 @@ const translations = {
         rerun:
             "RUN AGAIN",
 
-        running:
-            "RUNNING…",
-
         scientificNote:
             "This animation illustrates the concept of controlled release rather than real pharmacokinetic patient data."
+
     },
 
 
     hu: {
+
         heroSubtitle:
             "A szabályozott gyógyszerleadás alapelvének bemutatása.",
 
@@ -3266,6 +3585,9 @@ const translations = {
         gradualText:
             "A hatóanyag kisebb mennyiségekben szabadul fel az idő során, nem pedig egyetlen nagy, azonnali impulzusként.",
 
+        sustained:
+            "FENNTARTOTT LEADÁS",
+
         sustainedTitle:
             "EGYENLETES LEADÁS",
 
@@ -3299,20 +3621,17 @@ const translations = {
         rerun:
             "ÚJRAINDÍTÁS",
 
-        running:
-            "FUT…",
-
         scientificNote:
             "Az animáció a szabályozott gyógyszerleadás koncepcióját szemlélteti, nem valódi farmakokinetikai betegadatokat."
+
     }
+
 };
 
 
 /* =========================================================
-   DOM REFERENCES
+   DOM
 ========================================================= */
-
-const body = document.body;
 
 const languageModal =
     document.getElementById("languageModal");
@@ -3368,27 +3687,41 @@ const eventTitle =
 const eventText =
     document.getElementById("eventText");
 
+const graphContainers =
+    [...document.querySelectorAll(".graph")];
+
+const drugs =
+    [...document.querySelectorAll(".drug")];
+
 const stageElements =
     [...document.querySelectorAll(".stage")];
+
+let currentLanguage = "en";
 
 
 /* =========================================================
    LANGUAGE
 ========================================================= */
 
-let currentLanguage = "en";
+function translate(key) {
+
+    return (
+        translations[currentLanguage][key] ??
+        key
+    );
+}
+
 
 function setLanguage(language) {
 
-    currentLanguage = language;
+    currentLanguage =
+        language;
 
     document.documentElement.lang =
         language === "hu"
             ? "hu"
             : "en";
 
-    const dictionary =
-        translations[language];
 
     document
         .querySelectorAll("[data-i18n]")
@@ -3397,12 +3730,16 @@ function setLanguage(language) {
             const key =
                 element.dataset.i18n;
 
-            if (!(key in dictionary)) {
+            if (
+                translations[language][key]
+                === undefined
+            ) {
                 return;
             }
 
             element.innerHTML =
-                dictionary[key];
+                translations[language][key];
+
         });
 
 
@@ -3412,20 +3749,20 @@ function setLanguage(language) {
 
             button.classList.toggle(
                 "active",
-                button.dataset.switchLanguage === language
+                button.dataset.switchLanguage
+                    === language
             );
 
         });
 
 
-    /*
-       Update dynamic simulation strings
-       without resetting the animation.
-    */
-
     updateDynamicText();
 }
 
+
+/* =========================================================
+   LANGUAGE EVENTS
+========================================================= */
 
 document
     .querySelectorAll("[data-language]")
@@ -3443,13 +3780,12 @@ document
                     "hidden"
                 );
 
-                body.classList.remove(
-                    "modal-open"
+                app.classList.add(
+                    "ready"
                 );
 
-                app.classList.add("ready");
-
                 startGraphAnimation();
+
             }
         );
 
@@ -3478,25 +3814,28 @@ document
    GRAPH ANIMATION
 ========================================================= */
 
-const graphContainers =
-    [...document.querySelectorAll(".graph")];
-
 function startGraphAnimation() {
 
-    /*
-       Removing + re-adding the class forces the browser
-       to create a new animation timeline.
-    */
+    graphContainers.forEach(
+        graph => {
 
-    graphContainers.forEach(graph => {
+            graph.classList.remove(
+                "playing"
+            );
 
-        graph.classList.remove("playing");
+            /*
+               Force browser reflow so that the animation
+               is guaranteed to restart.
+            */
 
-        void graph.offsetWidth;
+            void graph.offsetWidth;
 
-        graph.classList.add("playing");
+            graph.classList.add(
+                "playing"
+            );
 
-    });
+        }
+    );
 }
 
 
@@ -3506,18 +3845,28 @@ function startGraphAnimation() {
 
 function showPage(page) {
 
-    page1.classList.remove("active");
-    page2.classList.remove("active");
+    page1.classList.remove(
+        "active"
+    );
 
-    page.classList.add("active");
+    page2.classList.remove(
+        "active"
+    );
+
+    page.classList.add(
+        "active"
+    );
 
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
 
+
     if (page === page1) {
+
         startGraphAnimation();
+
     }
 }
 
@@ -3527,11 +3876,6 @@ openSimulation.addEventListener(
     () => {
 
         showPage(page2);
-
-        /*
-           Stop any previous simulation state when
-           entering the simulator.
-        */
 
         resetSimulation();
 
@@ -3552,23 +3896,15 @@ backButton.addEventListener(
 
 
 /* =========================================================
-   SIMULATION CONFIGURATION
+   SIMULATION
 ========================================================= */
 
-/*
-   24 seconds total.
-
-   This is deliberately much slower than the original 9 seconds
-   so that an audience can actually read each stage.
-*/
-
-const duration = 24000;
+const duration =
+    24000;
 
 
 /*
-   Each particle starts at one specific point in the simulation.
-
-   The positions are percentages of the scene dimensions.
+   Fractional X/Y positions relative to scene size.
 */
 
 const particleEndpoints = [
@@ -3585,14 +3921,8 @@ const particleEndpoints = [
 ];
 
 
-/*
-   Release moments.
-
-   They are spread out deliberately so that the audience
-   can see individual particles leaving the depot.
-*/
-
 const releaseSchedule = [
+
     0.08,
     0.18,
     0.30,
@@ -3601,14 +3931,9 @@ const releaseSchedule = [
     0.68,
     0.79,
     0.89
+
 ];
 
-
-/*
-   Five readable educational stages.
-
-   Each stage remains on screen long enough to read.
-*/
 
 const simulationStages = [
 
@@ -3616,97 +3941,121 @@ const simulationStages = [
         start: 0.00,
         end: 0.18,
 
-        statusKey: "starting",
-        kickerKey: "systemStart",
-        titleKey: "systemStart",
-        textKey: "systemStartText"
+        statusKey:
+            "starting",
+
+        kickerKey:
+            "systemStart",
+
+        titleKey:
+            "systemStart",
+
+        textKey:
+            "systemStartText"
     },
 
     {
         start: 0.18,
         end: 0.42,
 
-        statusKey: "releasing",
-        kickerKey: "gradual",
-        titleKey: "gradual",
-        textKey: "gradualText"
+        statusKey:
+            "releasing",
+
+        kickerKey:
+            "gradual",
+
+        titleKey:
+            "gradual",
+
+        textKey:
+            "gradualText"
     },
 
     {
         start: 0.42,
         end: 0.66,
 
-        statusKey: "sustained",
-        kickerKey: "sustained",
-        titleKey: "sustainedTitle",
-        textKey: "sustainedText"
+        statusKey:
+            "sustained",
+
+        kickerKey:
+            "sustained",
+
+        titleKey:
+            "sustainedTitle",
+
+        textKey:
+            "sustainedText"
     },
 
     {
         start: 0.66,
         end: 0.88,
 
-        statusKey: "continuing",
-        kickerKey: "extendedTitle",
-        titleKey: "extendedTitle",
-        textKey: "extendedText"
+        statusKey:
+            "continuing",
+
+        kickerKey:
+            "extendedTitle",
+
+        titleKey:
+            "extendedTitle",
+
+        textKey:
+            "extendedText"
     },
 
     {
         start: 0.88,
         end: 1.00,
 
-        statusKey: "complete",
-        kickerKey: "completeTitle",
-        titleKey: "completeTitle",
-        textKey: "completeText"
+        statusKey:
+            "complete",
+
+        kickerKey:
+            "completeTitle",
+
+        titleKey:
+            "completeTitle",
+
+        textKey:
+            "completeText"
     }
 
 ];
 
 
-/* =========================================================
-   STATE
-========================================================= */
-
 let running = false;
+
 let paused = false;
 
-let animationFrame = null;
+let animationFrame =
+    null;
 
 let startTime = 0;
+
 let pausedAt = 0;
 
 let lastParticleCount = 0;
+
 let currentStage = -1;
 
 
 /* =========================================================
-   TEXT HELPERS
+   DYNAMIC TEXT
 ========================================================= */
-
-function translate(key) {
-
-    return (
-        translations[currentLanguage][key] ??
-        key
-    );
-}
-
 
 function updateDynamicText() {
 
     if (running || paused) {
 
-        /*
-           During active simulation, update the text
-           based on the current stage.
-        */
-
         const p =
             running
                 ? Math.min(
-                    (performance.now() - startTime) / duration,
+                    (
+                        performance.now()
+                        - startTime
+                    ) / duration,
                     1
                 )
                 : pausedAt;
@@ -3716,10 +4065,6 @@ function updateDynamicText() {
         return;
     }
 
-
-    /*
-       Idle state
-    */
 
     status.textContent =
         translate("ready");
@@ -3736,7 +4081,7 @@ function updateDynamicText() {
 
 
 /* =========================================================
-   STAGE MANAGEMENT
+   STAGES
 ========================================================= */
 
 function getStage(progressValue) {
@@ -3755,35 +4100,57 @@ function updateStage(progressValue) {
         getStage(progressValue);
 
 
-    if (progressValue >= 0.9999) {
+    if (
+        progressValue >= 0.9999
+    ) {
+
         stageIndex = 4;
+
     }
 
 
-    if (stageIndex === -1) {
+    if (
+        stageIndex === -1
+    ) {
+
         return;
+
     }
 
 
-    if (stageIndex !== currentStage) {
+    if (
+        stageIndex !== currentStage
+    ) {
 
-        currentStage = stageIndex;
+        currentStage =
+            stageIndex;
+
 
         const stage =
-            simulationStages[stageIndex];
+            simulationStages[
+                stageIndex
+            ];
 
 
         status.textContent =
-            translate(stage.statusKey);
+            translate(
+                stage.statusKey
+            );
 
         eventKicker.textContent =
-            translate(stage.kickerKey);
+            translate(
+                stage.kickerKey
+            );
 
         eventTitle.textContent =
-            translate(stage.titleKey);
+            translate(
+                stage.titleKey
+            );
 
         eventText.textContent =
-            translate(stage.textKey);
+            translate(
+                stage.textKey
+            );
 
 
         stageElements.forEach(
@@ -3798,51 +4165,56 @@ function updateStage(progressValue) {
         );
 
 
-        /*
-           Slightly animate the event panel whenever
-           the educational stage changes.
-        */
-
         eventTitle.animate(
             [
                 {
                     opacity: .3,
-                    transform: "translateY(5px)"
+
+                    transform:
+                        "translateY(5px)"
                 },
 
                 {
                     opacity: 1,
-                    transform: "translateY(0)"
+
+                    transform:
+                        "translateY(0)"
                 }
             ],
             {
                 duration: 500,
-                easing: "ease-out"
+
+                easing:
+                    "ease-out"
             }
         );
 
     }
+
 }
 
 
 /* =========================================================
-   PARTICLE ANIMATION
+   EASING
 ========================================================= */
-
-const drugs =
-    [...document.querySelectorAll(".drug")];
-
 
 function easeOutCubic(t) {
 
-    return 1 - Math.pow(
-        1 - t,
-        3
-    );
+    return 1 -
+        Math.pow(
+            1 - t,
+            3
+        );
 }
 
 
-function renderParticles(progressValue) {
+/* =========================================================
+   PARTICLES
+========================================================= */
+
+function renderParticles(
+    progressValue
+) {
 
     const width =
         scene.clientWidth;
@@ -3860,10 +4232,6 @@ function renderParticles(progressValue) {
             const releaseStart =
                 releaseSchedule[index];
 
-            /*
-               Travel duration for each particle.
-            */
-
             const travelDuration =
                 0.17;
 
@@ -3875,9 +4243,12 @@ function renderParticles(progressValue) {
                 ) / travelDuration;
 
 
-            if (progressValue < releaseStart) {
+            if (
+                progressValue < releaseStart
+            ) {
 
-                drug.style.opacity = "0";
+                drug.style.opacity =
+                    "0";
 
                 drug.style.transform =
                     "translate3d(0,0,0) scale(.4)";
@@ -3889,8 +4260,13 @@ function renderParticles(progressValue) {
             releasedCount++;
 
 
-            const [xFactor, yFactor] =
-                particleEndpoints[index];
+            const [
+                xFactor,
+                yFactor
+            ] =
+                particleEndpoints[
+                    index
+                ];
 
 
             const targetX =
@@ -3913,6 +4289,7 @@ function renderParticles(progressValue) {
                         )
                     );
 
+
                 const x =
                     targetX * eased;
 
@@ -3929,11 +4306,15 @@ function renderParticles(progressValue) {
 
                 const scale =
                     .55 +
-                    Math.min(local, 1) * .45;
+                    Math.min(
+                        local,
+                        1
+                    ) * .45;
 
 
                 drug.style.opacity =
                     opacity.toString();
+
 
                 drug.style.transform =
                     `
@@ -3945,13 +4326,8 @@ function renderParticles(progressValue) {
                     scale(${scale})
                     `;
 
-            } else {
-
-                /*
-                   After reaching its destination,
-                   keep the particle visible but faint,
-                   with a tiny floating movement.
-                */
+            }
+            else {
 
                 const idleTime =
                     progressValue -
@@ -3963,17 +4339,21 @@ function renderParticles(progressValue) {
 
                 const driftX =
                     Math.sin(
-                        idleTime * 20 + index
+                        idleTime * 20 +
+                        index
                     ) * 5;
+
 
                 const driftY =
                     Math.cos(
-                        idleTime * 17 + index * .8
+                        idleTime * 17 +
+                        index * .8
                     ) * 5;
 
 
                 drug.style.opacity =
                     ".42";
+
 
                 drug.style.transform =
                     `
@@ -3990,11 +4370,6 @@ function renderParticles(progressValue) {
         }
     );
 
-
-    /*
-       Counter should correspond to particles that
-       have actually been released.
-    */
 
     dose.textContent =
         releasedCount;
@@ -4016,7 +4391,7 @@ function renderParticles(progressValue) {
 
 
 /* =========================================================
-   DEPOT RELEASE PULSE
+   DEPOT PULSE
 ========================================================= */
 
 function triggerDepotPulse() {
@@ -4030,7 +4405,6 @@ function triggerDepotPulse() {
     scene.classList.add(
         "release-pulse"
     );
-
 }
 
 
@@ -4038,15 +4412,20 @@ function triggerDepotPulse() {
    SIMULATION LOOP
 ========================================================= */
 
-function updateSimulation(timestamp) {
+function updateSimulation(
+    timestamp
+) {
 
     if (!running) {
+
         return;
+
     }
 
 
     const elapsed =
-        timestamp - startTime;
+        timestamp -
+        startTime;
 
 
     const percentage =
@@ -4056,24 +4435,15 @@ function updateSimulation(timestamp) {
         );
 
 
-    /*
-       Progress bar
-    */
-
     progress.style.width =
         `${percentage * 100}%`;
 
 
     percent.textContent =
-        `${Math.round(percentage * 100)}%`;
+        `${Math.round(
+            percentage * 100
+        )}%`;
 
-
-    /*
-       Simulated 8-hour window.
-
-       Decimal display makes the timer feel alive
-       without changing the educational meaning.
-    */
 
     const simulatedHours =
         percentage * 8;
@@ -4083,29 +4453,19 @@ function updateSimulation(timestamp) {
         simulatedHours.toFixed(1);
 
 
-    /*
-       Educational stage
-    */
-
     updateStage(
         percentage
     );
 
-
-    /*
-       Particles
-    */
 
     renderParticles(
         percentage
     );
 
 
-    /*
-       Complete
-    */
-
-    if (percentage >= 1) {
+    if (
+        percentage >= 1
+    ) {
 
         finishSimulation();
 
@@ -4128,32 +4488,32 @@ function updateSimulation(timestamp) {
 function startSimulation() {
 
     /*
-       If paused, resume from exactly where we stopped.
+       Resume from pause.
     */
 
     if (paused) {
 
         paused = false;
+
         running = true;
 
         simInfo.classList.remove(
             "paused"
         );
 
-        status.textContent =
-            translate("running");
-
-        /*
-           Shift the start time forward by the paused duration
-           so the simulation continues from the same point.
-        */
 
         startTime =
             performance.now() -
             pausedAt * duration;
 
+
         startButton.innerHTML =
-            `Ⅱ <span>${translate("pause")}</span>`;
+            `
+            Ⅱ
+            <span>
+                ${translate("pause")}
+            </span>
+            `;
 
 
         animationFrame =
@@ -4162,38 +4522,49 @@ function startSimulation() {
             );
 
         return;
+
     }
 
 
     /*
-       Fresh run.
+       Fresh simulation.
     */
 
     resetSimulationVisuals();
 
+
     running = true;
+
     paused = false;
+
 
     startTime =
         performance.now();
+
 
     currentStage = -1;
 
     lastParticleCount = 0;
 
+
     simInfo.classList.remove(
         "paused"
     );
 
+
     startButton.innerHTML =
-        `Ⅱ <span>${translate("pause")}</span>`;
+        `
+        Ⅱ
+        <span>
+            ${translate("pause")}
+        </span>
+        `;
 
 
     animationFrame =
         requestAnimationFrame(
             updateSimulation
         );
-
 }
 
 
@@ -4204,8 +4575,11 @@ function startSimulation() {
 function pauseSimulation() {
 
     if (!running) {
+
         return;
+
     }
+
 
     paused =
         true;
@@ -4217,21 +4591,22 @@ function pauseSimulation() {
     pausedAt =
         Math.min(
             (
-                performance.now() -
-                startTime
+                performance.now()
+                - startTime
             ) / duration,
             1
         );
 
 
-    if (animationFrame !== null) {
+    if (
+        animationFrame !== null
+    ) {
 
         cancelAnimationFrame(
             animationFrame
         );
 
         animationFrame = null;
-
     }
 
 
@@ -4245,8 +4620,12 @@ function pauseSimulation() {
 
 
     startButton.innerHTML =
-        `▶ <span>${translate("resume")}</span>`;
-
+        `
+        ▶
+        <span>
+            ${translate("resume")}
+        </span>
+        `;
 }
 
 
@@ -4263,7 +4642,9 @@ function finishSimulation() {
         false;
 
 
-    if (animationFrame !== null) {
+    if (
+        animationFrame !== null
+    ) {
 
         cancelAnimationFrame(
             animationFrame
@@ -4277,14 +4658,11 @@ function finishSimulation() {
     progress.style.width =
         "100%";
 
-
     percent.textContent =
         "100%";
 
-
     hours.textContent =
         "8.0";
-
 
     dose.textContent =
         "8";
@@ -4308,13 +4686,19 @@ function finishSimulation() {
 
     stageElements.forEach(
         element =>
-            element.classList.add("active")
+            element.classList.add(
+                "active"
+            )
     );
 
 
     startButton.innerHTML =
-        `↻ <span>${translate("rerun")}</span>`;
-
+        `
+        ↻
+        <span>
+            ${translate("rerun")}
+        </span>
+        `;
 }
 
 
@@ -4325,9 +4709,13 @@ function finishSimulation() {
 function resetSimulationVisuals() {
 
     running = false;
+
     paused = false;
 
-    if (animationFrame !== null) {
+
+    if (
+        animationFrame !== null
+    ) {
 
         cancelAnimationFrame(
             animationFrame
@@ -4351,9 +4739,14 @@ function resetSimulationVisuals() {
         "0";
 
 
-    lastParticleCount = 0;
-    currentStage = -1;
-    pausedAt = 0;
+    lastParticleCount =
+        0;
+
+    currentStage =
+        -1;
+
+    pausedAt =
+        0;
 
 
     simInfo.classList.remove(
@@ -4376,7 +4769,9 @@ function resetSimulationVisuals() {
 
     stageElements.forEach(
         element =>
-            element.classList.remove("active")
+            element.classList.remove(
+                "active"
+            )
     );
 
 
@@ -4397,7 +4792,12 @@ function resetSimulationVisuals() {
 
 
     startButton.innerHTML =
-        `▶ <span>${translate("start")}</span>`;
+        `
+        ▶
+        <span>
+            ${translate("start")}
+        </span>
+        `;
 
 }
 
@@ -4409,8 +4809,35 @@ function resetSimulation() {
 }
 
 
+function stopSimulation() {
+
+    running = false;
+
+    paused = false;
+
+
+    if (
+        animationFrame !== null
+    ) {
+
+        cancelAnimationFrame(
+            animationFrame
+        );
+
+        animationFrame = null;
+
+    }
+
+
+    scene.classList.remove(
+        "release-pulse"
+    );
+
+}
+
+
 /* =========================================================
-   START / PAUSE BUTTON
+   BUTTONS
 ========================================================= */
 
 startButton.addEventListener(
@@ -4421,11 +4848,12 @@ startButton.addEventListener(
 
             pauseSimulation();
 
-            return;
+        }
+        else {
+
+            startSimulation();
 
         }
-
-        startSimulation();
 
     }
 );
@@ -4433,21 +4861,13 @@ startButton.addEventListener(
 
 resetButton.addEventListener(
     "click",
-    () => {
-
-        resetSimulation();
-
-    }
+    resetSimulation
 );
 
 
 /* =========================================================
    INITIAL STATE
 ========================================================= */
-
-/*
-   Language popup appears before the application starts.
-*/
 
 languageModal.classList.remove(
     "hidden"
@@ -4457,18 +4877,11 @@ app.classList.remove(
     "ready"
 );
 
-body.classList.add(
-    "modal-open"
-);
-
-
-/*
-   Make sure the first graph state is clean.
-*/
-
 graphContainers.forEach(
     graph =>
-        graph.classList.remove("playing")
+        graph.classList.remove(
+            "playing"
+        )
 );
 
 </script>
